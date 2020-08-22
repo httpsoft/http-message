@@ -28,7 +28,7 @@ final class Uri implements UriInterface
     /**
      * Standard ports and supported schemes.
      */
-    public const SCHEMES = [80 => 'http', 443 => 'https'];
+    private const SCHEMES = [80 => 'http', 443 => 'https'];
 
     /**
      * @var string
