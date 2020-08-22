@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Tests\Message\Factory;
+namespace HttpSoft\Tests\Message;
 
-use HttpSoft\Message\Factory\UriFactory;
 use HttpSoft\Message\Uri;
+use HttpSoft\Message\UriFactory;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;

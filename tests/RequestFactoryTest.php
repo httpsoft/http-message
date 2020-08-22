@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Tests\Message\Factory;
+namespace HttpSoft\Tests\Message;
 
-use HttpSoft\Message\Factory\RequestFactory;
 use HttpSoft\Message\Request;
+use HttpSoft\Message\RequestFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;

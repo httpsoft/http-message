@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Message\Factory;
+namespace HttpSoft\Message;
 
-use HttpSoft\Message\UploadedFile;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;

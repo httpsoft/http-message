@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Message\Factory;
+namespace HttpSoft\Message;
 
-use HttpSoft\Message\Uri;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 

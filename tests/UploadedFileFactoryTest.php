@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Tests\Message\Factory;
+namespace HttpSoft\Tests\Message;
 
-use HttpSoft\Message\Factory\UploadedFileFactory;
+use HttpSoft\Message\UploadedFile;
+use HttpSoft\Message\UploadedFileFactory;
 use HttpSoft\Message\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UploadedFileInterface;
 
 use function file_exists;
 use function sys_get_temp_dir;
@@ -49,6 +51,8 @@ class UploadedFileFactoryTest extends TestCase
             $clientFilename = 'file.txt',
             $clientMediaType = 'text/plain'
         );
+        $this->assertInstanceOf(UploadedFile::class, $uploadedFile);
+        $this->assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
         $this->assertInstanceOf(StreamInterface::class, $uploadedFile->getStream());
         $this->assertInstanceOf(Stream::class, $uploadedFile->getStream());
         $this->assertSame($stream, $uploadedFile->getStream());

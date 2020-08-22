@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Message\Factory;
+namespace HttpSoft\Message;
 
-use HttpSoft\Message\Stream;
 use InvalidArgumentException;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;

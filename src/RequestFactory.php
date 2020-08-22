@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace HttpSoft\Message\Factory;
+namespace HttpSoft\Message;
 
-use HttpSoft\Message\Request;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 
