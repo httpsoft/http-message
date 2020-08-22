@@ -72,7 +72,7 @@ final class ServerRequest implements ServerRequestInterface
         string $method = 'GET',
         $uri = '',
         array $headers = [],
-        $body = 'php://input',
+        $body = 'php://temp',
         string $protocol = '1.1'
     ) {
         $this->validateUploadedFiles($uploadedFiles);
