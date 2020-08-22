@@ -157,7 +157,7 @@ final class UploadedFile implements UploadedFileInterface
         }
 
         if ($this->stream === null) {
-            $this->stream = new Stream($this->file, 'wb+');
+            $this->stream = new Stream($this->file);
         }
 
         return $this->stream;

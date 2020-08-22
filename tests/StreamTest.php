@@ -53,10 +53,10 @@ class StreamTest extends TestCase
         $this->assertFalse($stream->eof());
         $this->assertTrue($stream->isReadable());
         $this->assertTrue($stream->isSeekable());
-        $this->assertFalse($stream->isWritable());
+        $this->assertTrue($stream->isWritable());
         $this->assertSame(0, $stream->getSize());
         $this->assertSame('', $stream->getContents());
-        $this->assertSame(stream_get_meta_data($this->defaultResource), $stream->getMetadata());
+        $this->assertSame($this->stream->getMetadata(), $stream->getMetadata());
     }
 
     public function testGetMetadata()

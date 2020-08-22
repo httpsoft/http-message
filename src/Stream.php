@@ -14,7 +14,7 @@ final class Stream implements StreamInterface
      * @param string|resource $stream
      * @param string $mode
      */
-    public function __construct($stream = 'php://temp', string $mode = 'r')
+    public function __construct($stream = 'php://temp', string $mode = 'wb+')
     {
         $this->init($stream, $mode);
     }
