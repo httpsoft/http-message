@@ -1,0 +1,84 @@
+on:
+    - pull_request
+    - push
+
+name: build
+
+jobs:
+    tests:
+        name: PHP ${{ matrix.php-version }}
+        runs-on: ubuntu-latest
+        env:
+            extensions: curl, mbstring, dom
+            key: cache-v1
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.4"
+                    - "8.0"
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Setup cache environment
+                id: cache-env
+                uses: shivammathur/cache-extensions@v1
+                with:
+                    php-version: ${{ matrix.php-version }}
+                    extensions: ${{ env.extensions }}
+                    key: ${{ env.key }}
+
+            -   name: Cache extensions
+                uses: actions/cache@v2
+                with:
+                    path: ${{ steps.cache-env.outputs.dir }}
+                    key: ${{ steps.cache-env.outputs.key }}
+                    restore-keys: ${{ steps.cache-env.outputs.key }}
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-version }}
+                    extensions: ${{ env.extensions }}
+                    ini-values: date.timezone='UTC'
+                    coverage: pcov
+
+            -   name: Determine composer cache directory
+                run: echo "::set-env name=COMPOSER_CACHE_DIR::$(composer config cache-dir)"
+
+            -   name: Cache dependencies installed with composer
+                uses: actions/cache@v1
+                with:
+                    path: ${{ env.COMPOSER_CACHE_DIR }}
+                    key: php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                    restore-keys: php-${{ matrix.php-version }}-composer-
+
+            -   name: Install dependencies with composer php 7.4
+                if: matrix.php-version == '7.4'
+                run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+            -   name: Install dependencies with composer php 8.0
+                if: matrix.php-version == '8.0'
+                run: composer update --ignore-platform-reqs --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+            -   name: PHPCS check
+                run: vendor/bin/phpcs
+
+            -   name: Psalm static analysis
+                run: vendor/bin/psalm --no-progress
+
+            -   name: PHPUnit run with coverage on PHP 7.4
+                if: matrix.php-version == '7.4'
+                run: vendor/bin/phpunit --coverage-clover=coverage.clover
+
+            -   name: PHPUnit run without coverage on PHP 8.0
+                if: matrix.php-version == '8.0'
+                run: vendor/bin/phpunit
+
+            -   name: Code coverage on PHP 7.4
+                if: matrix.php-version == '7.4'
+                run: |
+                    wget https://scrutinizer-ci.com/ocular.phar
+                    php ocular.phar code-coverage:upload --format=php-clover coverage.clover
