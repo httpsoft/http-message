@@ -153,7 +153,7 @@ trait ResponseTrait
         if (!is_int($code)) {
             if (!is_numeric($code) || is_float($code)) {
                 throw new InvalidArgumentException(sprintf(
-                    'Response status code is not valid. Must be a integer, received `%s`.',
+                    'Response status code is not valid. Must be an integer, received `%s`.',
                     (is_object($code) ? get_class($code) : gettype($code))
                 ));
             }
