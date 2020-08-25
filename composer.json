@@ -21,7 +21,8 @@
     "require": {
         "php": "^7.4|^8.0",
         "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0"
+        "psr/http-message": "^1.0",
+        "infection/infection": "^0.17.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3",
