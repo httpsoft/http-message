@@ -33,17 +33,17 @@ final class Uri implements UriInterface
     /**
      * @var string
      */
-    private string $scheme = '';
+    private string $scheme;
 
     /**
      * @var string
      */
-    private string $userInfo = '';
+    private string $userInfo;
 
     /**
      * @var string
      */
-    private string $host = '';
+    private string $host;
 
     /**
      * @var int|null
@@ -53,17 +53,17 @@ final class Uri implements UriInterface
     /**
      * @var string
      */
-    private string $path = '';
+    private string $path;
 
     /**
      * @var string
      */
-    private string $query = '';
+    private string $query;
 
     /**
      * @var string
      */
-    private string $fragment = '';
+    private string $fragment;
 
     /**
      * @var string|null
@@ -348,7 +348,7 @@ final class Uri implements UriInterface
             return '';
         }
 
-        if (!in_array($scheme, self::SCHEMES)) {
+        if (!in_array($scheme, self::SCHEMES, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Unsupported scheme `%s`; must be an empty string or any of the set (%s).',
                 $scheme,
