@@ -173,7 +173,7 @@ trait StreamTrait
             throw new RuntimeException('Stream is not seekable');
         }
 
-        if (($result = fseek($this->resource, $offset, $whence)) !== 0) {
+        if (fseek($this->resource, $offset, $whence) !== 0) {
             throw new RuntimeException('Error seeking within stream');
         }
     }
