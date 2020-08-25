@@ -390,7 +390,7 @@ final class Uri implements UriInterface
      */
     private function normalizeHost(string $host): string
     {
-        return strtolower($host);
+        return mb_strtolower($host);
     }
 
     /**
