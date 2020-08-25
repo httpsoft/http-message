@@ -108,9 +108,9 @@ final class UploadedFile implements UploadedFileInterface
     ) {
         if (!array_key_exists($error, self::ERRORS)) {
             throw new InvalidArgumentException(sprintf(
-                '"%s" is not valid error status for "UploadedFile". It must be a number from "UPLOAD_ERR_*" constant (%s).',
+                '"%s" is not valid error status for "UploadedFile". It must be one of "UPLOAD_ERR_*" constants:  "%s".',
                 $error,
-                implode(', ', array_keys(self::ERRORS))
+                implode('", "', array_keys(self::ERRORS))
             ));
         }
 
