@@ -97,6 +97,7 @@ final class UploadedFile implements UploadedFileInterface
      * @param int $error
      * @param string|null $clientFilename
      * @param string|null $clientMediaType
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function __construct(
         $streamOrFile,
@@ -145,6 +146,8 @@ final class UploadedFile implements UploadedFileInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress PossiblyNullArgument
      */
     public function getStream(): StreamInterface
     {
@@ -165,6 +168,8 @@ final class UploadedFile implements UploadedFileInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress DocblockTypeContradiction
      */
     public function moveTo($targetPath): void
     {
@@ -237,6 +242,7 @@ final class UploadedFile implements UploadedFileInterface
      * files via is_uploaded_file() and move_uploaded_file() or writes If SAPI is not used.
      *
      * @param string $targetPath
+     * @psalm-suppress PossiblyNullReference
      */
     private function moveOrWriteFile(string $targetPath): void
     {

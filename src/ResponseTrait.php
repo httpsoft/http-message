@@ -30,7 +30,7 @@ trait ResponseTrait
      * Map of standard HTTP status code and reason phrases.
      *
      * @link https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     * @var array
+     * @var array<int, string>
      */
     private static array $phrases = [
         // Informational 1xx
@@ -144,6 +144,9 @@ trait ResponseTrait
      *     use the defaults as suggested in the HTTP specification.
      * @return static
      * @throws InvalidArgumentException for invalid status code arguments.
+     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress TypeDoesNotContainType
+     * @psalm-suppress RedundantCondition
      */
     public function withStatus($code, $reasonPhrase = ''): ResponseInterface
     {
@@ -181,6 +184,7 @@ trait ResponseTrait
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
+     * @psalm-suppress RedundantCondition
      */
     public function getReasonPhrase(): string
     {
@@ -193,6 +197,7 @@ trait ResponseTrait
      * @param StreamInterface|string|resource $body
      * @param array $headers
      * @param string $protocol
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     private function init(
         int $statusCode = 200,

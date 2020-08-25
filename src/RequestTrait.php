@@ -130,6 +130,7 @@ trait RequestTrait
      * @param string $method Case-sensitive method.
      * @return static
      * @throws InvalidArgumentException for invalid HTTP methods.
+     * @psalm-suppress DocblockTypeContradiction
      */
     public function withMethod($method): RequestInterface
     {
@@ -216,6 +217,7 @@ trait RequestTrait
      * @param array $headers
      * @param StreamInterface|string|resource $body
      * @param string $protocol
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     private function init(
         string $method = 'GET',
@@ -239,6 +241,7 @@ trait RequestTrait
     /**
      * @param UriInterface|string $uri
      * @throws InvalidArgumentException for invalid URI.
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     private function setUri($uri): void
     {

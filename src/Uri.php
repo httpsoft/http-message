@@ -144,6 +144,8 @@ final class Uri implements UriInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress PossiblyNullOperand
      */
     public function getAuthority(): string
     {
@@ -480,6 +482,7 @@ final class Uri implements UriInterface
      * @param string $string
      * @param string $pattern
      * @return string
+     * @psalm-suppress MixedArgument
      */
     private function encode(string $string, string $pattern): string
     {

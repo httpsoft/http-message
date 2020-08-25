@@ -128,6 +128,7 @@ trait MessageTrait
      * @return bool Returns true if any header names match the given header
      *     name using a case-insensitive string comparison. Returns false if
      *     no matching header name is found in the message.
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function hasHeader($name): bool
     {
@@ -199,6 +200,7 @@ trait MessageTrait
      * @param string|string[] $value Header value(s).
      * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     * @psalm-suppress MixedPropertyTypeCoercion
      */
     public function withHeader($name, $value): MessageInterface
     {
@@ -233,6 +235,7 @@ trait MessageTrait
      * @param string|string[] $value Header value(s).
      * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     * @psalm-suppress MixedPropertyTypeCoercion
      */
     public function withAddedHeader($name, $value): MessageInterface
     {
@@ -308,6 +311,7 @@ trait MessageTrait
     /**
      * @param StreamInterface|string|resource $stream
      * @param string $mode
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     private function registerStream($stream, string $mode = 'wb+'): void
     {
@@ -329,8 +333,9 @@ trait MessageTrait
     }
 
     /**
-     * @param array $originalHeaders
+     * @param array<string, string|int|float> $originalHeaders
      * @throws InvalidArgumentException When the header name or header value is not valid.
+     * @psalm-suppress MixedPropertyTypeCoercion
      */
     private function registerHeaders(array $originalHeaders = []): void
     {
@@ -393,6 +398,7 @@ trait MessageTrait
     /**
      * @param mixed $value
      * @throws InvalidArgumentException for invalid header value.
+     * @psalm-suppress MixedAssignment
      */
     private function validateHeaderValue($value): void
     {
@@ -415,7 +421,7 @@ trait MessageTrait
     }
 
     /**
-     * @param string $protocol
+     * @param mixed $protocol
      * @throws InvalidArgumentException for invalid HTTP protocol version.
      */
     private function validateProtocolVersion($protocol): void

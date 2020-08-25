@@ -157,6 +157,8 @@ final class ServerRequest implements ServerRequestInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress DocblockTypeContradiction
      */
     public function withParsedBody($data): self
     {
@@ -223,6 +225,7 @@ final class ServerRequest implements ServerRequestInterface
     /**
      * @param array $uploadedFiles
      * @throws InvalidArgumentException
+     * @psalm-suppress MixedAssignment
      */
     private function validateUploadedFiles(array $uploadedFiles): void
     {

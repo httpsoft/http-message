@@ -73,6 +73,7 @@ trait StreamTrait
      * Closes the stream and any underlying resources.
      *
      * @return void
+     * @psalm-suppress PossiblyNullArgument
      */
     public function close(): void
     {
@@ -196,6 +197,7 @@ trait StreamTrait
      * Returns whether or not the stream is writable.
      *
      * @return bool
+     * @psalm-suppress MixedAssignment
      */
     public function isWritable(): bool
     {
@@ -240,6 +242,7 @@ trait StreamTrait
      * Returns whether or not the stream is readable.
      *
      * @return bool
+     * @psalm-suppress MixedAssignment
      */
     public function isReadable(): bool
     {
@@ -282,6 +285,7 @@ trait StreamTrait
      *
      * @return string
      * @throws RuntimeException if unable to read or an error occurs while reading.
+     * @psalm-suppress PossiblyNullArgument
      */
     public function getContents(): string
     {
