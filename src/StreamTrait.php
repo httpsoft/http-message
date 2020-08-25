@@ -166,15 +166,15 @@ trait StreamTrait
     public function seek($offset, $whence = SEEK_SET): void
     {
         if (!$this->resource) {
-            throw new RuntimeException('No resource available. Cannot seek position');
+            throw new RuntimeException('No resource available. Cannot seek position.');
         }
 
         if (!$this->isSeekable()) {
-            throw new RuntimeException('Stream is not seekable');
+            throw new RuntimeException('Stream is not seekable.');
         }
 
         if (fseek($this->resource, $offset, $whence) !== 0) {
-            throw new RuntimeException('Error seeking within stream');
+            throw new RuntimeException('Error seeking within stream.');
         }
     }
 
@@ -224,15 +224,15 @@ trait StreamTrait
     public function write($string): int
     {
         if (!$this->resource) {
-            throw new RuntimeException('No resource available. Cannot write');
+            throw new RuntimeException('No resource available. Cannot write.');
         }
 
         if (!$this->isWritable()) {
-            throw new RuntimeException('Stream is not writable');
+            throw new RuntimeException('Stream is not writable.');
         }
 
         if (!is_int($result = fwrite($this->resource, $string))) {
-            throw new RuntimeException('Error writing to stream');
+            throw new RuntimeException('Error writing to stream.');
         }
 
         return $result;
@@ -266,15 +266,15 @@ trait StreamTrait
     public function read($length): string
     {
         if (!$this->resource) {
-            throw new RuntimeException('No resource available. Cannot read');
+            throw new RuntimeException('No resource available. Cannot read.');
         }
 
         if (!$this->isReadable()) {
-            throw new RuntimeException('Stream is not readable');
+            throw new RuntimeException('Stream is not readable.');
         }
 
         if (!is_string($result = fread($this->resource, $length))) {
-            throw new RuntimeException('Error reading stream');
+            throw new RuntimeException('Error reading stream.');
         }
 
         return $result;
@@ -290,11 +290,11 @@ trait StreamTrait
     public function getContents(): string
     {
         if (!$this->isReadable()) {
-            throw new RuntimeException('Stream is not readable');
+            throw new RuntimeException('Stream is not readable.');
         }
 
         if (!is_string($result = stream_get_contents($this->resource))) {
-            throw new RuntimeException('Error reading stream');
+            throw new RuntimeException('Error reading stream.');
         }
 
         return $result;
@@ -307,7 +307,7 @@ trait StreamTrait
      * stream_get_meta_data() function.
      *
      * @link http://php.net/manual/en/function.stream-get-meta-data.php
-     * @param string $key Specific metadata to retrieve.
+     * @param string|null $key Specific metadata to retrieve.
      * @return array|mixed|null Returns an associative array if no key is
      *     provided. Returns a specific key value if a key is provided and the
      *     value is found, or null if the key is not found.
@@ -345,7 +345,7 @@ trait StreamTrait
         if (is_string($stream)) {
             set_error_handler(static function (int $error): bool {
                 if ($error === E_WARNING) {
-                    throw new InvalidArgumentException('Invalid stream reference provided');
+                    throw new InvalidArgumentException('Invalid stream reference provided.');
                 }
                 return true;
             });
@@ -359,7 +359,7 @@ trait StreamTrait
 
         if (!is_resource($stream) || get_resource_type($stream) !== 'stream') {
             throw new InvalidArgumentException(
-                'Invalid stream provided. Must be a string stream identifier or stream resource'
+                'Invalid stream provided. It must be a string stream identifier or stream resource.'
             );
         }
 

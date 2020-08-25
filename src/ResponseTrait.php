@@ -153,7 +153,7 @@ trait ResponseTrait
         if (!is_int($code)) {
             if (!is_numeric($code) || is_float($code)) {
                 throw new InvalidArgumentException(sprintf(
-                    'Response status code is not valid. Must be an integer, received `%s`.',
+                    'Response status code is not valid. It must be an integer, %s received.',
                     (is_object($code) ? get_class($code) : gettype($code))
                 ));
             }
@@ -162,7 +162,7 @@ trait ResponseTrait
 
         if (!is_string($reasonPhrase)) {
             throw new InvalidArgumentException(sprintf(
-                'Response reason phrase is not valid. Must be a string, received `%s`.',
+                'Response reason phrase is not valid. It must be a string, %s received.',
                 (is_object($reasonPhrase) ? get_class($reasonPhrase) : gettype($reasonPhrase))
             ));
         }
@@ -222,7 +222,7 @@ trait ResponseTrait
     {
         if ($statusCode < 100 || $statusCode > 599) {
             throw new InvalidArgumentException(sprintf(
-                'Response status code `%d` is not valid. Must be in the range from 100 to 599 enabled.',
+                'Response status code "%d" is not valid. It must be in 100..599 range.',
                 $statusCode
             ));
         }

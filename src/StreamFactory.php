@@ -39,7 +39,7 @@ final class StreamFactory implements StreamFactoryInterface
     public function createStreamFromResource($resource): StreamInterface
     {
         if (is_string($resource)) {
-            throw new InvalidArgumentException('Invalid stream provided. Must be a stream resource.');
+            throw new InvalidArgumentException('Invalid stream provided. It must be a stream resource.');
         }
 
         return new Stream($resource);

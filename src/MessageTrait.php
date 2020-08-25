@@ -427,16 +427,16 @@ trait MessageTrait
     private function validateProtocolVersion($protocol): void
     {
         if (!is_string($protocol) || empty($protocol)) {
-            throw new InvalidArgumentException('HTTP protocol version must be an string and must not be empty.');
+            throw new InvalidArgumentException('HTTP protocol version must be a string and must not be empty.');
         }
 
         $supportedProtocolVersions = ['1.0', '1.1', '2.0', '2'];
 
         if (!in_array($protocol, $supportedProtocolVersions, true)) {
             throw new InvalidArgumentException(sprintf(
-                'Unsupported HTTP protocol version `%s` provided. Supported (%s) in string types.',
+                'Unsupported HTTP protocol version "%s" provided. The following strings are supported: "%s".',
                 $protocol,
-                implode(', ', $supportedProtocolVersions)
+                implode('", "', $supportedProtocolVersions)
             ));
         }
     }
