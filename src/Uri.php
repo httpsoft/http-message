@@ -348,7 +348,7 @@ final class Uri implements UriInterface
             return '';
         }
 
-        if (!in_array($scheme, self::SCHEMES)) {
+        if (!in_array($scheme, self::SCHEMES, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Unsupported scheme `%s`; must be an empty string or any of the set (%s).',
                 $scheme,
