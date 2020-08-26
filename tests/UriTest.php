@@ -425,9 +425,6 @@ class UriTest extends TestCase
 
     public function testUtf8Host(): void
     {
-        $uri = new Uri('https://пример.рф');
-        $this->assertSame('пример.рф', $uri->getHost());
-
         $uri = (new Uri())->withHost($host = '例子.例子');
         $this->assertSame($host, $uri->getHost());
         $this->assertSame('//' . $host, (string) $uri);
