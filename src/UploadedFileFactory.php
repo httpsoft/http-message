@@ -22,7 +22,7 @@ final class UploadedFileFactory implements UploadedFileFactoryInterface
         string $clientFilename = null,
         string $clientMediaType = null
     ): UploadedFileInterface {
-        $size = $size ?? $stream->getSize();
+        $size = (int) ($size === null ? $stream->getSize() : $size);
         return new UploadedFile($stream, $size, $error, $clientFilename, $clientMediaType);
     }
 }
