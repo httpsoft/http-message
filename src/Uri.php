@@ -348,11 +348,11 @@ final class Uri implements UriInterface
             return '';
         }
 
-        if (!in_array($scheme, self::SCHEMES)) {
+        if (!in_array($scheme, self::SCHEMES, true)) {
             throw new InvalidArgumentException(sprintf(
-                'Unsupported scheme `%s`; must be an empty string or any of the set (%s).',
+                'Unsupported scheme "%s". It must be an empty string or any of "%s".',
                 $scheme,
-                implode(', ', self::SCHEMES)
+                implode('", "', self::SCHEMES)
             ));
         }
 
@@ -408,7 +408,7 @@ final class Uri implements UriInterface
 
         if (!is_numeric($port) || is_float($port)) {
             throw new InvalidArgumentException(sprintf(
-                'Invalid port `%s` specified; must be an integer, an integer string, or null.',
+                'Invalid port "%s" specified. It must be an integer, an integer string, or null.',
                 (is_object($port) ? get_class($port) : gettype($port))
             ));
         }
@@ -417,7 +417,7 @@ final class Uri implements UriInterface
 
         if ($port < 1 || $port > 65535) {
             throw new InvalidArgumentException(sprintf(
-                'Invalid port `%d` specified. Must be a valid TCP/UDP port (more 1 and less 65535).',
+                'Invalid port "%d" specified. It must be a valid TCP/UDP port in range 2..65534.',
                 $port
             ));
         }
@@ -515,7 +515,7 @@ final class Uri implements UriInterface
     {
         if (!is_string($value)) {
             throw new InvalidArgumentException(sprintf(
-                '`%s` method expects a string type %s; received `%s`.',
+                '"%s" method expects a string type %s. "%s" received.',
                 $method,
                 $phrase,
                 (is_object($value) ? get_class($value) : gettype($value))

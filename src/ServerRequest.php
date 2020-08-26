@@ -164,7 +164,7 @@ final class ServerRequest implements ServerRequestInterface
     {
         if (!is_array($data) && !is_object($data) && $data !== null) {
             throw new InvalidArgumentException(sprintf(
-                '`%s` is not valid Parsed Body. Must be `null` or a `array` or a `object`.',
+                '"%s" is not valid Parsed Body. It must be a null, an array, or an object.',
                 gettype($data)
             ));
         }
@@ -238,7 +238,7 @@ final class ServerRequest implements ServerRequestInterface
             if (!$file instanceof UploadedFileInterface) {
                 throw new InvalidArgumentException(sprintf(
                     'Invalid item in uploaded files structure.'
-                    . '`%s` is not an instance of `Psr\Http\Message\UploadedFileInterface`.',
+                    . '"%s" is not an instance of "\Psr\Http\Message\UploadedFileInterface".',
                     (is_object($file) ? get_class($file) : gettype($file))
                 ));
             }

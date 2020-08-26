@@ -108,9 +108,9 @@ final class UploadedFile implements UploadedFileInterface
     ) {
         if (!array_key_exists($error, self::ERRORS)) {
             throw new InvalidArgumentException(sprintf(
-                '`%s` is not valid error status for `UploadedFile`. Must be number from `UPLOAD_ERR_*` constant (%s)',
+                '"%s" is not valid error status for "UploadedFile". It must be one of "UPLOAD_ERR_*" constants:  "%s".',
                 $error,
-                implode(', ', array_keys(self::ERRORS))
+                implode('", "', array_keys(self::ERRORS))
             ));
         }
 
@@ -139,7 +139,7 @@ final class UploadedFile implements UploadedFileInterface
         }
 
         throw new InvalidArgumentException(sprintf(
-            '`%s` is not valid stream or file provided for `UploadedFile`.',
+            '"%s" is not valid stream or file provided for "UploadedFile".',
             (is_object($streamOrFile) ? get_class($streamOrFile) : gettype($streamOrFile))
         ));
     }
@@ -183,20 +183,20 @@ final class UploadedFile implements UploadedFileInterface
 
         if (!is_string($targetPath)) {
             throw new InvalidArgumentException(sprintf(
-                '`%s` is not valid target path for move. Must be a string type.',
+                '"%s" is not valid target path for move. It must be a string type.',
                 (is_object($targetPath) ? get_class($targetPath) : gettype($targetPath))
             ));
         }
 
         if (empty($targetPath)) {
-            throw new InvalidArgumentException('Target path is not valid for move. Must be a non-empty string.');
+            throw new InvalidArgumentException('Target path is not valid for move. It must be a non-empty string.');
         }
 
         $targetDirectory = dirname($targetPath);
 
         if (!is_dir($targetDirectory) || !is_writable($targetDirectory)) {
             throw new RuntimeException(sprintf(
-                'The target directory `%s` does not exists or is not writable.',
+                'The target directory "%s" does not exist or is not writable.',
                 $targetDirectory
             ));
         }
@@ -250,14 +250,14 @@ final class UploadedFile implements UploadedFileInterface
             $isCliEnv = (!PHP_SAPI || strpos(PHP_SAPI, 'cli') === 0 || strpos(PHP_SAPI, 'phpdbg') === 0);
 
             if (!($isCliEnv ? rename($this->file, $targetPath) : move_uploaded_file($this->file, $targetPath))) {
-                throw new RuntimeException(sprintf('Uploaded file could not be moved to `%s`', $targetPath));
+                throw new RuntimeException(sprintf('Uploaded file could not be moved to "%s".', $targetPath));
             }
 
             return;
         }
 
         if (!$file = fopen($targetPath, 'wb+')) {
-            throw new RuntimeException(sprintf('Unable to write to designated path (%s).', $targetPath));
+            throw new RuntimeException(sprintf('Unable to write to "%s".', $targetPath));
         }
 
         $this->stream->rewind();

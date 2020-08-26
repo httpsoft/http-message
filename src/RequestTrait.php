@@ -96,7 +96,7 @@ trait RequestTrait
 
         if (!is_string($requestTarget) || preg_match('/\s/', $requestTarget)) {
             throw new InvalidArgumentException(sprintf(
-                '`%s` is not valid request target. Request target must be a string and cannot contain whitespace',
+                '"%s" is not valid request target. Request target must be a string and cannot contain whitespace.',
                 (is_object($requestTarget) ? get_class($requestTarget) : gettype($requestTarget))
             ));
         }
@@ -140,7 +140,7 @@ trait RequestTrait
 
         if (!is_string($method)) {
             throw new InvalidArgumentException(sprintf(
-                'Invalid HTTP method. Must be a string type, received `%s`.',
+                'Invalid HTTP method. It must be a string, %s received.',
                 (is_object($method) ? get_class($method) : gettype($method))
             ));
         }
@@ -256,7 +256,7 @@ trait RequestTrait
         }
 
         throw new InvalidArgumentException(sprintf(
-            '`%s` is not valid URI. Must be `null` or a `string` or a `Psr\Http\Message\UriInterface` instance.',
+            '"%s" is not valid URI. It must be a null, a string, or a "\Psr\Http\Message\UriInterface" instance.',
             (is_object($uri) ? get_class($uri) : gettype($uri))
         ));
     }
