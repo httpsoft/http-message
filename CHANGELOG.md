@@ -1,11 +1,33 @@
 # HTTP Message Change Log
 
+## 1.0.3 - 2020.08.28
+
+### Added
+
+-  Adds files to `.github` folder (ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE.md, CODE_OF_CONDUCT.md, SECURITY.md).
+
+### Changed
+
+- Moves static analysis and checking of the code standard to an independent github action.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.0.2 - 2020.08.26
 
 ### Added
 
-- added support OS Windows to build github action.
-- [#3](https://github.com/httpsoft/http-message/pull/3) added `infection/infection` package as dev dependency and mutation action to github workflows for perform mutation testing.
+- Adds support OS Windows to build github action.
+- [#3](https://github.com/httpsoft/http-message/pull/3) adds `infection/infection` package as dev dependency and mutation action to github workflows for perform mutation testing.
 
 ### Changed
 
