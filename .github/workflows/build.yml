@@ -72,14 +72,6 @@ jobs:
         if: matrix.php-version == '8.0'
         run: composer update --ignore-platform-reqs --prefer-dist --no-interaction --no-progress --optimize-autoloader
 
-      - name: PHPCS check on Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: vendor/bin/phpcs
-
-      - name: Psalm static analysis on Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: vendor/bin/psalm --no-progress
-
       - name: PHPUnit run with coverage on Linux PHP 7.4
         if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
         run: vendor/bin/phpunit --coverage-clover=coverage.clover

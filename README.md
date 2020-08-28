@@ -4,7 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/httpsoft/http-message/v)](https://packagist.org/packages/httpsoft/http-message)
 [![Total Downloads](https://poser.pugx.org/httpsoft/http-message/downloads)](https://packagist.org/packages/httpsoft/http-message)
 [![GitHub Build Status](https://github.com/httpsoft/http-message/workflows/build/badge.svg)](https://github.com/httpsoft/http-message/actions)
-[![GitHub Mutation Test Status](https://github.com/httpsoft/http-message/workflows/mutation/badge.svg)](https://github.com/httpsoft/http-message/actions)
+[![GitHub Static Analysis Status](https://github.com/httpsoft/http-message/workflows/static/badge.svg)](https://github.com/httpsoft/http-message/actions)
 [![Scrutinizer Code Coverage](https://scrutinizer-ci.com/g/httpsoft/http-message/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/httpsoft/http-message/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/httpsoft/http-message/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/httpsoft/http-message/?branch=master)
 
