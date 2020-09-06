@@ -1,10 +1,32 @@
 # HTTP Message Change Log
 
+## 1.0.4 - 2020.09.06
+
+### Added
+
+- [#4](https://github.com/httpsoft/http-message/pull/4) adds implementations declaration to the `composer.json`.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.0.3 - 2020.08.28
 
 ### Added
 
--  Adds files to `.github` folder (ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE.md, CODE_OF_CONDUCT.md, SECURITY.md).
+- Adds files to `.github` folder (ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE.md, CODE_OF_CONDUCT.md, SECURITY.md).
 
 ### Changed
 
