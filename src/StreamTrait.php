@@ -338,14 +338,15 @@ trait StreamTrait
      *
      * @param string|resource $stream String stream target or stream resource.
      * @param string $mode Resource mode for stream target.
-     * @throws InvalidArgumentException for invalid streams or resources.
+     * @throws RuntimeException if the stream or file cannot be opened.
+     * @throws InvalidArgumentException if the stream or resource is invalid.
      */
     private function init($stream, string $mode): void
     {
         if (is_string($stream)) {
             set_error_handler(static function (int $error): bool {
                 if ($error === E_WARNING) {
-                    throw new InvalidArgumentException('Invalid stream reference provided.');
+                    throw new RuntimeException('The stream or file cannot be opened.');
                 }
                 return true;
             });

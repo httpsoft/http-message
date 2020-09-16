@@ -8,6 +8,7 @@ use HttpSoft\Tests\Message\TestAsset\Message;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 use stdClass;
 
 use function array_merge;
@@ -72,18 +73,36 @@ class MessageTest extends TestCase
     /**
      * @return array
      */
-    public function invalidBodyProvider(): array
+    public function invalidBodyTypeProvider(): array
     {
-        return $this->getInvalidValues(['int' => [1], 'fail-wrapper' => ['php://fail']]);
+        return $this->getInvalidValues(['int' => [1]]);
     }
 
     /**
-     * @dataProvider invalidBodyProvider
+     * @dataProvider invalidBodyTypeProvider
      * @param mixed $body
      */
-    public function testBodyPassingInConstructorThrowExceptionInvalidBody($body): void
+    public function testBodyPassingInConstructorThrowExceptionForInvalidBodyType($body): void
     {
         $this->expectException(InvalidArgumentException::class);
+        new Message($body);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidBodyStringTypeProvider(): array
+    {
+        return ['file-not-exist' => ['/file/not/exist'], 'fail-wrapper' => ['php://fail']];
+    }
+
+    /**
+     * @dataProvider invalidBodyStringTypeProvider
+     * @param mixed $body
+     */
+    public function testBodyPassingInConstructorThrowExceptionForFileCannotBeOpened($body): void
+    {
+        $this->expectException(RuntimeException::class);
         new Message($body);
     }
 
