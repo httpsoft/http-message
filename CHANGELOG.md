@@ -1,5 +1,27 @@
 # HTTP Message Change Log
 
+## 1.0.5 - 2020.09.16
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#6](https://github.com/httpsoft/http-message/pull/6) changes the thrown exception from `\InvalidArgumentException` to `\RuntimeException` when creating a stream if the file cannot be opened.
+
 ## 1.0.4 - 2020.09.06
 
 ### Added
