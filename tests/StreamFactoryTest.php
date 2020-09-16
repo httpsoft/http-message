@@ -9,6 +9,7 @@ use HttpSoft\Message\StreamFactory;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 use function file_exists;
 use function fopen;
@@ -63,16 +64,22 @@ class StreamFactoryTest extends TestCase
         $this->assertInstanceOf(StreamInterface::class, $stream);
     }
 
-    public function testCreateStreamFromFileThrowExceptionForInvalidMode(): void
+    /**
+     * @return array
+     */
+    public function invalidStreamProvider(): array
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->factory->createStreamFromFile($this->tmpFile, 'invalid-mode');
+        return ['file-not-exist' => ['/file/not/exist'], 'fail-wrapper' => ['php://fail']];
     }
 
-    public function testCreateStreamFromFileThrowExceptionForFileNotExist(): void
+    /**
+     * @dataProvider invalidStreamProvider
+     * @param string $stream
+     */
+    public function testCreateStreamFromFileThrowExceptionForFileCannotBeOpened(string $stream): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->factory->createStreamFromFile('/file/not/exist');
+        $this->expectException(RuntimeException::class);
+        $this->factory->createStreamFromFile($stream);
     }
 
     public function testCreateStreamFromResource(): void
