@@ -34,3 +34,19 @@ composer require httpsoft/http-message
 | Total time           | 1.9452 s  | 1.7094 s  | 2.2384 s  | 1.8085 s  | 2.3517 s  |
 
 See benchmark at [https://github.com/devanych/psr-http-benchmark](https://github.com/devanych/psr-http-benchmark).
+
+## Usage
+
+> For a description of how to use the package components, see the [PSR-7](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md) and [PSR-17](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-17-http-factory.md) specifications and [package documentation](https://httpsoft.org/docs/message).
+
+For the convenience of creating requests to the server from PHP superglobals, you can use the [httpsoft/http-server-request](https://github.com/httpsoft/http-server-request) package.
+
+```
+composer require httpsoft/http-server-request
+```
+
+You can use the [httpsoft/http-runner](https://github.com/httpsoft/http-runner) package to run requests to the server and emit responses, as well as build the [PSR-15](https://github.com/php-fig/http-server-middleware) middleware pipelines.
+
+```
+composer require httpsoft/http-runner
+```
