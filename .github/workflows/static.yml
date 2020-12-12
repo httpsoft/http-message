@@ -30,7 +30,7 @@ jobs:
           tools: composer:v2
 
       - name: Determine composer cache directory
-        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(composer config cache-dir)"
+        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(composer config cache-dir)" >> $GITHUB_ENV
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v2
