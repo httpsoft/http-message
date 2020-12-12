@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -37,7 +37,7 @@ jobs:
 
       - name: Determine composer cache directory on Linux
         if: matrix.os == 'ubuntu-latest'
-        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(composer config cache-dir)" >> $GITHUB_ENV
+        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
 
       - name: Determine composer cache directory on Windows
         if: matrix.os == 'windows-latest'
@@ -48,7 +48,8 @@ jobs:
         with:
           path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: php${{ matrix.php-version }}-composer-
+          restore-keys: |
+              php${{ matrix.php-version }}-composer-
 
       - name: Update composer
         run: composer self-update
