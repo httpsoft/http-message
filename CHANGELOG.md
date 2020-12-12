@@ -1,5 +1,28 @@
 # HTTP Message Change Log
 
+## 1.0.6 - 2020.12.12
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Updates development dependencies.
+- Fixes `HttpSoft\Message\StreamTrait::init()` to improve the performance of creation of the resource.
+
 ## 1.0.5 - 2020.09.16
 
 ### Added
