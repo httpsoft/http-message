@@ -333,7 +333,7 @@ trait StreamTrait
      *
      * Called when creating `Psr\Http\Message\StreamInterface` instance.
      *
-     * @param string|resource $stream String stream target or stream resource.
+     * @param mixed $stream String stream target or stream resource.
      * @param string $mode Resource mode for stream target.
      * @throws RuntimeException if the stream or file cannot be opened.
      * @throws InvalidArgumentException if the stream or resource is invalid.
