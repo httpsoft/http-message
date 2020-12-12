@@ -131,7 +131,7 @@ final class Uri implements UriInterface
             $this->cache .= '#' . $this->fragment;
         }
 
-        return (string) $this->cache;
+        return $this->cache;
     }
 
     /**
