@@ -5,7 +5,7 @@ on:
 name: static
 
 jobs:
-  mutation:
+  static:
     name: PHP ${{ matrix.php-version }}-${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
