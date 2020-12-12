@@ -76,6 +76,12 @@ class StreamTest extends TestCase
         $this->assertSame($content, (string) $this->stream);
     }
 
+    public function testCreateResourceThrowExceptionForStreamCannotBeOpened(): void
+    {
+        $this->expectException(RuntimeException::class);
+        new Stream('php://fail');
+    }
+
     public function testToStringThrowExceptionForIsNotReadable(): void
     {
         $stream = new Stream('php://output', 'w');

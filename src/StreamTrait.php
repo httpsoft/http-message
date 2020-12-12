@@ -20,13 +20,10 @@ use function get_resource_type;
 use function is_int;
 use function is_resource;
 use function is_string;
-use function restore_error_handler;
-use function set_error_handler;
 use function stream_get_contents;
 use function stream_get_meta_data;
 use function strpos;
 
-use const E_WARNING;
 use const SEEK_SET;
 
 /**
@@ -344,17 +341,10 @@ trait StreamTrait
     private function init($stream, string $mode): void
     {
         if (is_string($stream)) {
-            set_error_handler(static function (int $error): bool {
-                if ($error === E_WARNING) {
-                    throw new RuntimeException('The stream or file cannot be opened.');
-                }
-                return true;
-            });
+            $stream = @fopen($stream, $mode);
 
-            try {
-                $stream = fopen($stream, $mode);
-            } finally {
-                restore_error_handler();
+            if ($stream === false) {
+                throw new RuntimeException('The stream or file cannot be opened.');
             }
         }
 
