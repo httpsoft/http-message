@@ -1,5 +1,27 @@
 # HTTP Message Change Log
 
+## 1.0.7 - 2020.12.16
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#9](https://github.com/httpsoft/http-message/pull/9) fixes throwing the `\RuntimeException` exception when creating a resource if an empty string was passed.
+
 ## 1.0.6 - 2020.12.12
 
 ### Added
