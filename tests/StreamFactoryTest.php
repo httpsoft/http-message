@@ -69,7 +69,7 @@ class StreamFactoryTest extends TestCase
      */
     public function invalidStreamProvider(): array
     {
-        return ['file-not-exist' => ['/file/not/exist'], 'fail-wrapper' => ['php://fail']];
+        return ['empty' => [''], 'file-not-exist' => ['/file/not/exist'], 'fail-wrapper' => ['php://fail']];
     }
 
     /**

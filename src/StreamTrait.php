@@ -341,7 +341,7 @@ trait StreamTrait
     private function init($stream, string $mode): void
     {
         if (is_string($stream)) {
-            $stream = @fopen($stream, $mode);
+            $stream = $stream === '' ? false : @fopen($stream, $mode);
 
             if ($stream === false) {
                 throw new RuntimeException('The stream or file cannot be opened.');
