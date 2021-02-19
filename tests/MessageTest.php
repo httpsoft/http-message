@@ -13,7 +13,7 @@ use stdClass;
 
 use function array_merge;
 
-class MessageTest extends TestCase
+final class MessageTest extends TestCase
 {
     /**
      * @var Message

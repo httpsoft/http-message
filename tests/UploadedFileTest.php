@@ -26,7 +26,7 @@ use const UPLOAD_ERR_NO_TMP_DIR;
 use const UPLOAD_ERR_OK;
 use const UPLOAD_ERR_PARTIAL;
 
-class UploadedFileTest extends TestCase
+final class UploadedFileTest extends TestCase
 {
     /**
      * @var string

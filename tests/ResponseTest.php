@@ -12,7 +12,7 @@ use stdClass;
 
 use function array_merge;
 
-class ResponseTest extends TestCase
+final class ResponseTest extends TestCase
 {
     private const DEFAULT_STATUS_CODE = 200;
     private const DEFAULT_REASON_PHRASE = 'OK';

@@ -17,7 +17,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 
-class StreamFactoryTest extends TestCase
+final class StreamFactoryTest extends TestCase
 {
     /**
      * @var StreamFactory

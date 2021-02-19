@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 
-class RequestFactoryTest extends TestCase
+final class RequestFactoryTest extends TestCase
 {
     /**
      * @var RequestFactory

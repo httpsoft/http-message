@@ -11,7 +11,7 @@ use StdClass;
 
 use function array_merge;
 
-class UriTest extends TestCase
+final class UriTest extends TestCase
 {
     /**
      * @var Uri

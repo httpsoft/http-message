@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class ResponseFactoryTest extends TestCase
+final class ResponseFactoryTest extends TestCase
 {
     /**
      * @var ResponseFactory

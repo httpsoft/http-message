@@ -12,7 +12,7 @@ use stdClass;
 
 use function array_merge;
 
-class RequestTest extends TestCase
+final class RequestTest extends TestCase
 {
     private const DEFAULT_METHOD = 'GET';
 

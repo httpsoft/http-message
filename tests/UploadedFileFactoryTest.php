@@ -17,7 +17,7 @@ use function tempnam;
 
 use const UPLOAD_ERR_OK;
 
-class UploadedFileFactoryTest extends TestCase
+final class UploadedFileFactoryTest extends TestCase
 {
     /**
      * @var UploadedFileFactory

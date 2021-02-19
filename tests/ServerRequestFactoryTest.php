@@ -9,7 +9,7 @@ use HttpSoft\Message\ServerRequestFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ServerRequestFactoryTest extends TestCase
+final class ServerRequestFactoryTest extends TestCase
 {
     /**
      * @var ServerRequestFactory

@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
 
-class UriFactoryTest extends TestCase
+final class UriFactoryTest extends TestCase
 {
     /**
      * @var UriFactory

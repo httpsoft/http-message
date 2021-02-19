@@ -13,7 +13,7 @@ use StdClass;
 
 use const UPLOAD_ERR_OK;
 
-class ServerRequestTest extends TestCase
+final class ServerRequestTest extends TestCase
 {
     private const DEFAULT_METHOD = 'GET';
 
