@@ -16,6 +16,12 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
+        <const name="REQUEST_FACTORY" value="HttpSoft\Message\RequestFactory"/>
+        <const name="RESPONSE_FACTORY" value="HttpSoft\Message\ResponseFactory"/>
+        <const name="SERVER_REQUEST_FACTORY" value="HttpSoft\Message\ServerRequestFactory"/>
+        <const name="STREAM_FACTORY" value="HttpSoft\Message\StreamFactory"/>
+        <const name="UPLOADED_FILE_FACTORY" value="HttpSoft\Message\UploadedFileFactory"/>
+        <const name="URI_FACTORY" value="HttpSoft\Message\UriFactory"/>
     </php>
 
     <testsuites>

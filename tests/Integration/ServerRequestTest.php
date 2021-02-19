@@ -12,8 +12,6 @@ final class ServerRequestTest extends ServerRequestIntegrationTest
 {
     public function createSubject(): ServerRequestInterface
     {
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-
         return new ServerRequest($_SERVER, [], [], [], null, 'GET', '/');
     }
 }
