@@ -16,14 +16,14 @@ final class Request implements RequestInterface
      * @param string $method
      * @param UriInterface|string $uri
      * @param array $headers
-     * @param StreamInterface|string|resource $body
+     * @param StreamInterface|string|resource|null $body
      * @param string $protocol
      */
     public function __construct(
         string $method = 'GET',
         $uri = '',
         array $headers = [],
-        $body = 'php://temp',
+        $body = null,
         string $protocol = '1.1'
     ) {
         $this->init($method, $uri, $headers, $body, $protocol);

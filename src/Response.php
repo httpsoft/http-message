@@ -14,14 +14,14 @@ final class Response implements ResponseInterface
     /**
      * @param int $statusCode
      * @param array $headers
-     * @param StreamInterface|string|resource $body
+     * @param StreamInterface|string|resource|null $body
      * @param string $protocol
      * @param string $reasonPhrase
      */
     public function __construct(
         int $statusCode = 200,
         array $headers = [],
-        $body = 'php://temp',
+        $body = null,
         string $protocol = '1.1',
         string $reasonPhrase = ''
     ) {

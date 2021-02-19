@@ -194,7 +194,7 @@ trait ResponseTrait
     /**
      * @param int $statusCode
      * @param string $reasonPhrase
-     * @param StreamInterface|string|resource $body
+     * @param StreamInterface|string|resource|null $body
      * @param array $headers
      * @param string $protocol
      * @psalm-suppress MixedArgumentTypeCoercion
@@ -203,7 +203,7 @@ trait ResponseTrait
         int $statusCode = 200,
         string $reasonPhrase = '',
         array $headers = [],
-        $body = 'php://temp',
+        $body = null,
         string $protocol = '1.1'
     ): void {
         $this->setStatus($statusCode, $reasonPhrase);

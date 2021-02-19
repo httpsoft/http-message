@@ -51,7 +51,7 @@ final class MessageTest extends TestCase
      */
     public function unsupportedProtocolVersionProvider(): array
     {
-        return $this->getInvalidValues(['int' => [1], 'float' => [1.1], 'unsupported' => ['1']]);
+        return $this->getInvalidValues(['int' => [1], 'float' => [1.1], 'unsupported' => ['1'], 'null' => [null]]);
     }
 
     /**
@@ -182,7 +182,7 @@ final class MessageTest extends TestCase
      */
     public function invalidHeaderNameProvider(): array
     {
-        return $this->getInvalidValues([[1], ['Na\me'], ['Na/me'], ['Na<me'], ['Na>me']]);
+        return $this->getInvalidValues([[null], [1], ['Na\me'], ['Na/me'], ['Na<me'], ['Na>me']]);
     }
 
     /**
@@ -200,7 +200,7 @@ final class MessageTest extends TestCase
      */
     public function invalidHeaderValueProvider(): array
     {
-        return $this->getInvalidValues([["Va\nlue"], [["Va\r\nlue"]], ["Va\r)\nlue"]]);
+        return $this->getInvalidValues([[null], ["Va\nlue"], [["Va\r\nlue"]], ["Va\r)\nlue"]]);
     }
 
     /**
@@ -220,7 +220,6 @@ final class MessageTest extends TestCase
     private function getInvalidValues(array $values = []): array
     {
         $common = [
-            'null' => [null],
             'true' => [true],
             'false' => [false],
             'empty-array' => [[]],

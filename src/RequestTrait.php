@@ -215,15 +215,14 @@ trait RequestTrait
      * @param string $method
      * @param UriInterface|string $uri
      * @param array $headers
-     * @param StreamInterface|string|resource $body
+     * @param StreamInterface|string|resource|null $body
      * @param string $protocol
-     * @psalm-suppress MixedArgumentTypeCoercion
      */
     private function init(
         string $method = 'GET',
         $uri = '',
         array $headers = [],
-        $body = 'php://temp',
+        $body = null,
         string $protocol = '1.1'
     ): void {
         $this->method = $method;

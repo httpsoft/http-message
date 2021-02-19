@@ -14,6 +14,6 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
      */
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        return new ServerRequest($serverParams, [], [], [], null, $method, $uri, [], 'php://temp');
+        return new ServerRequest($serverParams, [], [], [], null, $method, $uri, [], null);
     }
 }

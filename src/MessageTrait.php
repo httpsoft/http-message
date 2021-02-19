@@ -57,9 +57,9 @@ trait MessageTrait
     private string $protocol = '1.1';
 
     /**
-     * @var StreamInterface
+     * @var StreamInterface|null
      */
-    private StreamInterface $stream;
+    private ?StreamInterface $stream;
 
     /**
      * Retrieves the HTTP protocol version as a string.
@@ -287,6 +287,10 @@ trait MessageTrait
      */
     public function getBody(): StreamInterface
     {
+        if ($this->stream === null) {
+            $this->stream = new Stream();
+        }
+
         return $this->stream;
     }
 
@@ -301,23 +305,26 @@ trait MessageTrait
      *
      * @param StreamInterface $body Body.
      * @return static
-     * @throws InvalidArgumentException When the body is not valid.
+     * @throws InvalidArgumentException if the body is not valid.
      */
     public function withBody(StreamInterface $body): MessageInterface
     {
+        if ($this->stream === $body) {
+            return $this;
+        }
+
         $new = clone $this;
         $new->stream = $body;
         return $new;
     }
 
     /**
-     * @param StreamInterface|string|resource $stream
+     * @param mixed $stream
      * @param string $mode
-     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     private function registerStream($stream, string $mode = 'wb+'): void
     {
-        if ($stream instanceof StreamInterface) {
+        if ($stream === null || $stream instanceof StreamInterface) {
             $this->stream = $stream;
             return;
         }
@@ -328,15 +335,16 @@ trait MessageTrait
         }
 
         throw new InvalidArgumentException(sprintf(
-            'Stream must be a `Psr\Http\Message\StreamInterface` implementation'
+            'Stream must be a `Psr\Http\Message\StreamInterface` implementation or null'
             . ' or a string stream resource identifier or an actual stream resource; received `%s`.',
             (is_object($stream) ? get_class($stream) : gettype($stream))
         ));
     }
 
     /**
-     * @param array<string, string|int|float> $originalHeaders
-     * @throws InvalidArgumentException When the header name or header value is not valid.
+     * @param array $originalHeaders
+     * @throws InvalidArgumentException if the header name or header value is not valid.
+     * @psalm-suppress MixedAssignment
      * @psalm-suppress MixedPropertyTypeCoercion
      */
     private function registerHeaders(array $originalHeaders = []): void

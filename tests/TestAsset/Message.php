@@ -22,7 +22,7 @@ final class Message implements MessageInterface
      * @param array $headers
      * @param string $protocol
      */
-    public function __construct($body = 'php://temp', array $headers = [], string $protocol = '')
+    public function __construct($body = null, array $headers = [], string $protocol = '')
     {
         $this->registerStream($body);
         $this->registerHeaders($headers);

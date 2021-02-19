@@ -60,7 +60,7 @@ final class ServerRequest implements ServerRequestInterface
      * @param string $method
      * @param UriInterface|string $uri
      * @param array $headers
-     * @param StreamInterface|string|resource $body
+     * @param StreamInterface|string|resource|null $body
      * @param string $protocol
      */
     public function __construct(
@@ -72,7 +72,7 @@ final class ServerRequest implements ServerRequestInterface
         string $method = 'GET',
         $uri = '',
         array $headers = [],
-        $body = 'php://temp',
+        $body = null,
         string $protocol = '1.1'
     ) {
         $this->validateUploadedFiles($uploadedFiles);
