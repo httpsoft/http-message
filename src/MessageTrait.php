@@ -9,6 +9,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
 use function array_merge;
+use function array_values;
 use function gettype;
 use function get_class;
 use function implode;
@@ -29,6 +30,13 @@ use function strtolower;
  */
 trait MessageTrait
 {
+    /**
+     * Supported HTTP Protocol Versions.
+     *
+     * @var string[]
+     */
+    private static array $supportedProtocolVersions = ['1.0', '1.1', '2.0', '2'];
+
     /**
      * Map of all registered original headers, as `original header name` => `array of values`.
      *
@@ -132,7 +140,7 @@ trait MessageTrait
      */
     public function hasHeader($name): bool
     {
-        return (is_string($name) && isset($this->headerNames[$this->normalizeHeaderName($name)]));
+        return (is_string($name) && isset($this->headerNames[strtolower($name)]));
     }
 
     /**
@@ -155,7 +163,7 @@ trait MessageTrait
             return [];
         }
 
-        return $this->headers[$this->headerNames[$this->normalizeHeaderName($name)]];
+        return $this->headers[$this->headerNames[strtolower($name)]];
     }
 
     /**
@@ -204,16 +212,13 @@ trait MessageTrait
      */
     public function withHeader($name, $value): MessageInterface
     {
-        $this->validateHeaderName($name);
         $normalized = $this->normalizeHeaderName($name);
+        $value = $this->normalizeHeaderValue($value);
         $new = clone $this;
 
-        if ($new->hasHeader($name)) {
+        if (isset($new->headerNames[$normalized])) {
             unset($new->headers[$new->headerNames[$normalized]]);
         }
-
-        $value = $this->normalizeHeaderValue($value);
-        $this->validateHeaderValue($value);
 
         $new->headerNames[$normalized] = $name;
         $new->headers[$name] = $value;
@@ -239,15 +244,12 @@ trait MessageTrait
      */
     public function withAddedHeader($name, $value): MessageInterface
     {
-        $this->validateHeaderName($name);
-
         if (!$this->hasHeader($name)) {
             return $this->withHeader($name, $value);
         }
 
         $header = $this->headerNames[$this->normalizeHeaderName($name)];
         $value = $this->normalizeHeaderValue($value);
-        $this->validateHeaderValue($value);
 
         $new = clone $this;
         $new->headers[$header] = array_merge($this->headers[$header], $value);
@@ -343,11 +345,8 @@ trait MessageTrait
         $this->headerNames = [];
 
         foreach ($originalHeaders as $name => $value) {
-            $value = $this->normalizeHeaderValue($value);
-            $this->validateHeaderValue($value);
-            $this->validateHeaderName($name);
-            $this->headers[$name] = $value;
             $this->headerNames[$this->normalizeHeaderName($name)] = $name;
+            $this->headers[$name] = $this->normalizeHeaderValue($value);
         }
     }
 
@@ -364,60 +363,47 @@ trait MessageTrait
     }
 
     /**
-     * @param string $name
+     * @param mixed $name
      * @return string
+     * @throws InvalidArgumentException for invalid header name.
      */
-    private function normalizeHeaderName(string $name): string
+    private function normalizeHeaderName($name): string
     {
+        if (!is_string($name) || !preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $name)) {
+            throw new InvalidArgumentException(sprintf(
+                '`%s` is not valid header name.',
+                (is_object($name) ? get_class($name) : (is_string($name) ? $name : gettype($name)))
+            ));
+        }
+
         return strtolower($name);
     }
 
     /**
      * @param mixed $value
      * @return array
+     * @throws InvalidArgumentException for invalid header name.
      */
     private function normalizeHeaderValue($value): array
     {
-        return is_array($value) ? $value : [$value];
-    }
+        $value = is_array($value) ? array_values($value) : [$value];
 
-    /**
-     * @param mixed $name
-     * @throws InvalidArgumentException for invalid header name.
-     */
-    private function validateHeaderName($name): void
-    {
-        if (!is_string($name) || !preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $name)) {
-            throw new InvalidArgumentException(sprintf(
-                '`%s` is not valid header name',
-                (is_object($name) ? get_class($name) : (is_string($name) ? $name : gettype($name)))
-            ));
-        }
-    }
-
-    /**
-     * @param mixed $value
-     * @throws InvalidArgumentException for invalid header value.
-     * @psalm-suppress MixedAssignment
-     */
-    private function validateHeaderValue($value): void
-    {
-        if (!is_array($value) || empty($value)) {
-            throw new InvalidArgumentException('Invalid header value: must be an array and must not be empty.');
+        if (empty($value)) {
+            throw new InvalidArgumentException(
+                'Header value must be a string or an array of strings, empty array given.',
+            );
         }
 
-        foreach ($value as $item) {
-            if (
-                (!is_string($item) && !is_numeric($item))
-                || preg_match('/[^\x09\x0a\x0d\x20-\x7E\x80-\xFE]/', (string) $item)
-                || preg_match("/(?:(?:(?<!\r)\n)|(?:\r(?!\n))|(?:\r\n(?![ \t])))/", (string) $item)
-            ) {
+        foreach ($value as $v) {
+            if ((!is_string($v) && !is_numeric($v)) || !preg_match('/^[ \t\x21-\x7E\x80-\xFF]*$/', (string) $v)) {
                 throw new InvalidArgumentException(sprintf(
-                    '"%s" is not valid header value',
-                    (is_object($item) ? get_class($item) : (is_string($item) ? $item : gettype($item)))
+                    '"%s" is not valid header value.',
+                    (is_object($v) ? get_class($v) : (is_string($v) ? $v : gettype($v)))
                 ));
             }
         }
+
+        return $value;
     }
 
     /**
@@ -426,17 +412,11 @@ trait MessageTrait
      */
     private function validateProtocolVersion($protocol): void
     {
-        if (!is_string($protocol) || empty($protocol)) {
-            throw new InvalidArgumentException('HTTP protocol version must be a string and must not be empty.');
-        }
-
-        $supportedProtocolVersions = ['1.0', '1.1', '2.0', '2'];
-
-        if (!in_array($protocol, $supportedProtocolVersions, true)) {
+        if (!in_array($protocol, self::$supportedProtocolVersions, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Unsupported HTTP protocol version "%s" provided. The following strings are supported: "%s".',
-                $protocol,
-                implode('", "', $supportedProtocolVersions)
+                is_string($protocol) ? $protocol : gettype($protocol),
+                implode('", "', self::$supportedProtocolVersions),
             ));
         }
     }
