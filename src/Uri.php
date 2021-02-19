@@ -111,23 +111,23 @@ final class Uri implements UriInterface
 
         $this->cache = '';
 
-        if ($this->scheme) {
+        if ($this->scheme !== '') {
             $this->cache .= $this->scheme . ':';
         }
 
-        if ($authority = $this->getAuthority()) {
+        if (($authority = $this->getAuthority()) !== '') {
             $this->cache .= '//' . $authority;
         }
 
-        if ($this->path) {
+        if ($this->path !== '') {
             $this->cache .= $authority ? '/' . ltrim($this->path, '/') : $this->path;
         }
 
-        if ($this->query) {
+        if ($this->query !== '') {
             $this->cache .= '?' . $this->query;
         }
 
-        if ($this->fragment) {
+        if ($this->fragment !== '') {
             $this->cache .= '#' . $this->fragment;
         }
 
@@ -149,11 +149,11 @@ final class Uri implements UriInterface
      */
     public function getAuthority(): string
     {
-        if (!$authority = $this->host) {
+        if (($authority = $this->host) === '') {
             return '';
         }
 
-        if ($this->userInfo) {
+        if ($this->userInfo !== '') {
             $authority = $this->userInfo . '@' . $authority;
         }
 
@@ -368,7 +368,7 @@ final class Uri implements UriInterface
      */
     private function normalizeUserInfo(string $user, ?string $pass = null): string
     {
-        if (!$user) {
+        if ($user === '') {
             return '';
         }
 
@@ -439,7 +439,7 @@ final class Uri implements UriInterface
         }
 
         $path = $this->encode($path, '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/');
-        return !$path ? '' : (($path[0] === '/') ? '/' . ltrim($path, '/') : $path);
+        return $path === '' ? '' : (($path[0] === '/') ? '/' . ltrim($path, '/') : $path);
     }
 
     /**
@@ -451,8 +451,12 @@ final class Uri implements UriInterface
      */
     private function normalizeQuery(string $query): string
     {
-        if (!$query = ltrim($query, '?')) {
+        if ($query === '' || $query === '?') {
             return '';
+        }
+
+        if ($query[0] === '?') {
+            $query = ltrim($query, '?');
         }
 
         return $this->encode($query, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/');
@@ -466,8 +470,12 @@ final class Uri implements UriInterface
      */
     private function normalizeFragment(string $fragment): string
     {
-        if (!$fragment = ltrim($fragment, '#')) {
+        if ($fragment === '' || $fragment === '#') {
             return '';
+        }
+
+        if ($fragment[0] === '#') {
+            $fragment = ltrim($fragment, '#');
         }
 
         return $this->encode($fragment, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/');
@@ -486,7 +494,11 @@ final class Uri implements UriInterface
      */
     private function encode(string $string, string $pattern): string
     {
-        return (string) preg_replace_callback($pattern, fn(array $matches) => rawurlencode($matches[0]), $string);
+        return (string) preg_replace_callback(
+            $pattern,
+            static fn (array $matches) => rawurlencode($matches[0]),
+            $string,
+        );
     }
 
     /**
