@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
-use function is_string;
+use function is_resource;
 
 final class StreamFactory implements StreamFactoryInterface
 {
@@ -38,7 +38,7 @@ final class StreamFactory implements StreamFactoryInterface
      */
     public function createStreamFromResource($resource): StreamInterface
     {
-        if (is_string($resource)) {
+        if (!is_resource($resource)) {
             throw new InvalidArgumentException('Invalid stream provided. It must be a stream resource.');
         }
 
