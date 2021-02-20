@@ -29,9 +29,9 @@ composer require httpsoft/http-message
 
 | Runs: 30,000         | Guzzle    | HttpSoft  | Laminas   | Nyholm    | Slim      |
 |----------------------|-----------|-----------|-----------|-----------|-----------|
-| Runs per second      | 15422     | 17550     | 13402     | 16588     | 12756     |
-| Average time per run | 0.0648 ms | 0.0570 ms | 0.0746 ms | 0.0603 ms | 0.0784 ms |
-| Total time           | 1.9452 s  | 1.7094 s  | 2.2384 s  | 1.8085 s  | 2.3517 s  |
+| Runs per second      | 15868     | 19544     | 12257     | 19022     | 12117     |
+| Average time per run | 0.0630 ms | 0.0512 ms | 0.0816 ms | 0.0526 ms | 0.0825 ms |
+| Total time           | 1.8905 s  | 1.5349 s  | 2.4474 s  | 1.5771 s  | 2.4757 s  |
 
 See benchmark at [https://github.com/devanych/psr-http-benchmark](https://github.com/devanych/psr-http-benchmark).
 
