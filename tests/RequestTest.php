@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace HttpSoft\Tests\Message;
 
-use InvalidArgumentException;
 use HttpSoft\Message\Request;
+use HttpSoft\Message\Uri;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
 use stdClass;
@@ -33,6 +34,14 @@ final class RequestTest extends TestCase
         $this->assertInstanceOf(UriInterface::class, $this->request->getUri());
     }
 
+    public function testConstructorAndGet(): void
+    {
+        $request = new Request($method = 'POST', $uri = new Uri('/example.com/?query=string'));
+        $this->assertSame('/example.com/?query=string', $request->getRequestTarget());
+        $this->assertSame($method, $request->getMethod());
+        $this->assertSame($uri, $request->getUri());
+    }
+
     public function testWithRequestTarget(): void
     {
         $request = $this->request->withRequestTarget('*');
@@ -45,6 +54,11 @@ final class RequestTest extends TestCase
         $request = $this->request->withRequestTarget(null);
         $this->assertSame($this->request, $request);
         $this->assertSame('/', $request->getRequestTarget());
+
+        $request = new Request('GET', '/example.com/?query=string');
+        $newRequest = $request->withRequestTarget(null);
+        $this->assertSame($request, $newRequest);
+        $this->assertSame('/example.com/?query=string', $request->getRequestTarget());
     }
 
     /**
@@ -85,10 +99,18 @@ final class RequestTest extends TestCase
 
     public function testWithUri(): void
     {
-        $uri = $this->createMock(UriInterface::class);
+        $uri = new Uri('/');
         $request = $this->request->withUri($uri);
         $this->assertNotSame($this->request, $request);
         $this->assertSame($uri, $request->getUri());
+    }
+
+    public function testWithUriHasNotBeenChangedNotClone(): void
+    {
+        $uri = $this->request->getUri();
+        $request = $this->request->withUri($uri);
+        $this->assertSame($this->request, $request);
+        $this->assertSame($uri, $this->request->getUri());
     }
 
     public function testWithUriUpdateHostHeaderFromUri(): void

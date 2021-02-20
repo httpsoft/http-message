@@ -63,8 +63,9 @@ trait RequestTrait
         }
 
         $target = $this->uri->getPath();
+        $query = $this->uri->getQuery();
 
-        if ($target && $query = $this->uri->getQuery()) {
+        if ($target !== '' && $query !== '') {
             $target .= '?' . $query;
         }
 
@@ -267,7 +268,9 @@ trait RequestTrait
      */
     private function updateHostHeaderFromUri(): void
     {
-        if (!$host = $this->uri->getHost()) {
+        $host = $this->uri->getHost();
+
+        if ($host === '') {
             return;
         }
 
