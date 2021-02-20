@@ -1,5 +1,28 @@
 # HTTP Message Change Log
 
+## 1.0.8 - 2021.02.20
+
+### Added
+
+- Adds lazy `HttpSoft\Message\Stream` creation to `HttpSoft\Message\MessageTrait` to improve performance. 
+- Adds integration tests against PSR-7 specification, for this purpose the package `php-http/psr7-integration-tests` is used as a development dependency.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Fixes the behavior of some `HttpSoft\Message\Uri` methods when passing them a single zero as a string, now `'0'` is not considered an empty value.
+
 ## 1.0.7 - 2020.12.16
 
 ### Added
