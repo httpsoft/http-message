@@ -114,6 +114,17 @@ final class MessageTest extends TestCase
         $this->assertSame($stream, $message->getBody());
     }
 
+    public function testWithAndGetHeader(): void
+    {
+        $message = $this->message->withHeader('Name', 'Value1');
+        $this->assertNotSame($this->message, $message);
+        $this->assertSame(['Value1'], $message->getHeader('Name'));
+
+        $message = $this->message->withHeader('Name', 'Value2');
+        $this->assertNotSame($this->message, $message);
+        $this->assertSame(['Value2'], $message->getHeader('Name'));
+    }
+
     public function testWithAndGetHeaders(): void
     {
         $message = $this->message->withHeader('Name', 'Value');
@@ -126,6 +137,7 @@ final class MessageTest extends TestCase
         $firstMessage = $this->message->withAddedHeader('Name', 'FirstValue');
         $this->assertNotSame($this->message, $firstMessage);
         $this->assertSame(['Name' => ['FirstValue']], $firstMessage->getHeaders());
+
         $secondMessage = $firstMessage->withAddedHeader('Name', 'SecondValue');
         $this->assertNotSame($firstMessage, $secondMessage);
         $this->assertSame(['Name' => ['FirstValue', 'SecondValue']], $secondMessage->getHeaders());
@@ -136,9 +148,14 @@ final class MessageTest extends TestCase
         $firstMessage = $this->message->withHeader('Name', 'Value');
         $this->assertNotSame($this->message, $firstMessage);
         $this->assertSame(['Name' => ['Value']], $firstMessage->getHeaders());
+
         $secondMessage = $firstMessage->withoutHeader('Name');
         $this->assertNotSame($firstMessage, $secondMessage);
         $this->assertSame([], $secondMessage->getHeaders());
+
+        $thirdMessage = $secondMessage->withoutHeader('Name');
+        $this->assertSame($secondMessage, $thirdMessage);
+        $this->assertSame([], $thirdMessage->getHeaders());
     }
 
     public function testHasHeaderFail(): void
