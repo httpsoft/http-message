@@ -17,7 +17,6 @@ use function fstat;
 use function ftell;
 use function fwrite;
 use function get_resource_type;
-use function is_int;
 use function is_resource;
 use function is_string;
 use function stream_get_contents;
@@ -37,6 +36,26 @@ trait StreamTrait
      * @var resource|null
      */
     private $resource;
+
+    /**
+     * @var int|null
+     */
+    private ?int $size = null;
+
+    /**
+     * @var bool|null
+     */
+    private ?bool $seekable = null;
+
+    /**
+     * @var bool|null
+     */
+    private ?bool $writable = null;
+
+    /**
+     * @var bool|null
+     */
+    private ?bool $readable = null;
 
     /**
      * Closes the stream and any underlying resources when the instance is destructed.
@@ -90,7 +109,8 @@ trait StreamTrait
     public function detach()
     {
         $resource = $this->resource;
-        $this->resource = null;
+        $this->resource = $this->size = null;
+        $this->seekable = $this->writable = $this->readable = false;
         return $resource;
     }
 
@@ -105,8 +125,12 @@ trait StreamTrait
             return null;
         }
 
+        if ($this->size !== null) {
+            return $this->size;
+        }
+
         $stats = fstat($this->resource);
-        return isset($stats['size']) ? (int) $stats['size'] : null;
+        return $this->size = isset($stats['size']) ? (int) $stats['size'] : null;
     }
 
     /**
@@ -121,7 +145,7 @@ trait StreamTrait
             throw new RuntimeException('No resource available. Cannot tell position');
         }
 
-        if (!is_int($result = ftell($this->resource))) {
+        if (($result = ftell($this->resource)) === false) {
             throw new RuntimeException('Error occurred during tell operation');
         }
 
@@ -145,7 +169,11 @@ trait StreamTrait
      */
     public function isSeekable(): bool
     {
-        return ($this->resource && $this->getMetadata('seekable'));
+        if ($this->seekable !== null) {
+            return $this->seekable;
+        }
+
+        return $this->seekable = ($this->resource && $this->getMetadata('seekable'));
     }
 
     /**
@@ -198,11 +226,15 @@ trait StreamTrait
      */
     public function isWritable(): bool
     {
-        if (!is_string($mode = $this->getMetadata('mode'))) {
-            return false;
+        if ($this->writable !== null) {
+            return $this->writable;
         }
 
-        return (
+        if (!is_string($mode = $this->getMetadata('mode'))) {
+            return $this->writable = false;
+        }
+
+        return $this->writable = (
             strpos($mode, 'w') !== false
             || strpos($mode, '+') !== false
             || strpos($mode, 'x') !== false
@@ -228,7 +260,9 @@ trait StreamTrait
             throw new RuntimeException('Stream is not writable.');
         }
 
-        if (!is_int($result = fwrite($this->resource, $string))) {
+        $this->size = null;
+
+        if (($result = fwrite($this->resource, $string)) === false) {
             throw new RuntimeException('Error writing to stream.');
         }
 
@@ -243,11 +277,15 @@ trait StreamTrait
      */
     public function isReadable(): bool
     {
-        if (!is_string($mode = $this->getMetadata('mode'))) {
-            return false;
+        if ($this->readable !== null) {
+            return $this->readable;
         }
 
-        return (strpos($mode, 'r') !== false || strpos($mode, '+') !== false);
+        if (!is_string($mode = $this->getMetadata('mode'))) {
+            return $this->readable = false;
+        }
+
+        return $this->readable = (strpos($mode, 'r') !== false || strpos($mode, '+') !== false);
     }
 
     /**
@@ -270,7 +308,7 @@ trait StreamTrait
             throw new RuntimeException('Stream is not readable.');
         }
 
-        if (!is_string($result = fread($this->resource, $length))) {
+        if (($result = fread($this->resource, $length)) === false) {
             throw new RuntimeException('Error reading stream.');
         }
 
@@ -290,7 +328,7 @@ trait StreamTrait
             throw new RuntimeException('Stream is not readable.');
         }
 
-        if (!is_string($result = stream_get_contents($this->resource))) {
+        if (($result = stream_get_contents($this->resource)) === false) {
             throw new RuntimeException('Error reading stream.');
         }
 
@@ -350,7 +388,7 @@ trait StreamTrait
 
         if (!is_resource($stream) || get_resource_type($stream) !== 'stream') {
             throw new InvalidArgumentException(
-                'Invalid stream provided. It must be a string stream identifier or stream resource.'
+                'Invalid stream provided. It must be a string stream identifier or stream resource.',
             );
         }
 
