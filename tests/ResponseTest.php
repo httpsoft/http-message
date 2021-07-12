@@ -64,6 +64,14 @@ final class ResponseTest extends TestCase
         $this->assertSame('Not Found', $response->getReasonPhrase());
     }
 
+    public function testWithStatusWithStringNumericCode(): void
+    {
+        $response = $this->response->withStatus($code = '404');
+        $this->assertNotSame($this->response, $response);
+        $this->assertSame((int) $code, $response->getStatusCode());
+        $this->assertSame('Not Found', $response->getReasonPhrase());
+    }
+
     public function testWithStatusAndCustomReasonPhrase(): void
     {
         $response = $this->response->withStatus($code = 404, $customPhrase = 'Custom Phrase');

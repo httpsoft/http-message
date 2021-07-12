@@ -109,20 +109,25 @@ final class MessageTest extends TestCase
     public function testWithBody(): void
     {
         $stream = $this->createMock(StreamInterface::class);
-        $message = $this->message->withBody($stream);
-        $this->assertNotSame($this->message, $message);
-        $this->assertSame($stream, $message->getBody());
+
+        $message1 = $this->message->withBody($stream);
+        $this->assertNotSame($this->message, $message1);
+        $this->assertSame($stream, $message1->getBody());
+
+        $message2 = $this->message->withBody($stream);
+        $this->assertNotSame($message1, $message2);
+        $this->assertSame($stream, $message2->getBody());
     }
 
     public function testWithAndGetHeader(): void
     {
-        $message = $this->message->withHeader('Name', 'Value1');
-        $this->assertNotSame($this->message, $message);
-        $this->assertSame(['Value1'], $message->getHeader('Name'));
+        $message1 = $this->message->withHeader('Name', 'Value1');
+        $this->assertNotSame($this->message, $message1);
+        $this->assertSame(['Value1'], $message1->getHeader('Name'));
 
-        $message = $this->message->withHeader('Name', 'Value2');
-        $this->assertNotSame($this->message, $message);
-        $this->assertSame(['Value2'], $message->getHeader('Name'));
+        $message2 = $message1->withHeader('Name', 'Value2');
+        $this->assertNotSame($message1, $message2);
+        $this->assertSame(['Value2'], $message2->getHeader('Name'));
     }
 
     public function testWithAndGetHeaders(): void

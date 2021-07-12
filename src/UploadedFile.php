@@ -246,10 +246,10 @@ final class UploadedFile implements UploadedFileInterface
      */
     private function moveOrWriteFile(string $targetPath): void
     {
-        if ($this->file) {
+        if ($this->file !== null) {
             $isCliEnv = (!PHP_SAPI || strpos(PHP_SAPI, 'cli') === 0 || strpos(PHP_SAPI, 'phpdbg') === 0);
 
-            if (!($isCliEnv ? rename($this->file, $targetPath) : move_uploaded_file($this->file, $targetPath))) {
+            if (!($isCliEnv ? @rename($this->file, $targetPath) : move_uploaded_file($this->file, $targetPath))) {
                 throw new RuntimeException(sprintf('Uploaded file could not be moved to "%s".', $targetPath));
             }
 
