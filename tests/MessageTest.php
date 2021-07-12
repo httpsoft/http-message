@@ -114,8 +114,8 @@ final class MessageTest extends TestCase
         $this->assertNotSame($this->message, $message1);
         $this->assertSame($stream, $message1->getBody());
 
-        $message2 = $this->message->withBody($stream);
-        $this->assertNotSame($message1, $message2);
+        $message2 = $message1->withBody($stream);
+        $this->assertSame($message1, $message2);
         $this->assertSame($stream, $message2->getBody());
     }
 

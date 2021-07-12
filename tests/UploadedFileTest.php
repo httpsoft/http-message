@@ -251,18 +251,4 @@ final class UploadedFileTest extends TestCase
         $this->expectException(RuntimeException::class);
         $uploadedFile->moveTo('path/to/not-exist');
     }
-
-    public function testMoveToThrowExceptionForSourceFileIsNotExist(): void
-    {
-        $uploadedFile = new UploadedFile('file-not-exist', 1024, UPLOAD_ERR_OK);
-        $this->expectException(RuntimeException::class);
-        $uploadedFile->moveTo(__DIR__);
-    }
-
-    public function testMoveToThrowExceptionForSourceFileIsEmptyString(): void
-    {
-        $uploadedFile = new UploadedFile('', 1024, UPLOAD_ERR_OK);
-        $this->expectException(RuntimeException::class);
-        $uploadedFile->moveTo(__DIR__);
-    }
 }
