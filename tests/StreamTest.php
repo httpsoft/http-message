@@ -106,6 +106,20 @@ final class StreamTest extends TestCase
         $this->assertNull($stream->getSize());
     }
 
+    public function testWriteAndGetSizeAndDetach(): void
+    {
+        $this->assertSame(0, $this->stream->getSize());
+
+        $this->stream->write('a');
+        $this->assertSame(1, $this->stream->getSize());
+
+        $this->stream->write('b');
+        $this->assertSame(2, $this->stream->getSize());
+
+        $this->stream->detach();
+        $this->assertNull($this->stream->getSize());
+    }
+
     public function testIsReadableReturnTrue(): void
     {
         $stream = new Stream($this->tmpFile, 'r');
@@ -196,5 +210,20 @@ final class StreamTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         new Stream(stream_context_create(['phar' => ['compress' => Phar::GZ]]));
+    }
+
+    public function testCacheMetadataForCoverage(): void
+    {
+        $this->assertSame(0, $this->stream->getSize());
+        $this->assertSame(0, $this->stream->getSize());
+
+        $this->assertTrue($this->stream->isReadable());
+        $this->assertTrue($this->stream->isReadable());
+
+        $this->assertTrue($this->stream->isSeekable());
+        $this->assertTrue($this->stream->isSeekable());
+
+        $this->assertTrue($this->stream->isWritable());
+        $this->assertTrue($this->stream->isWritable());
     }
 }
