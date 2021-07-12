@@ -6,10 +6,11 @@ name: build
 
 jobs:
   tests:
-    name: PHP ${{ matrix.php-version }}-${{ matrix.os }}
+    name: PHP ${{ matrix.php }}-${{ matrix.os }}
+
     runs-on: ${{ matrix.os }}
+
     env:
-      extensions: curl, mbstring, dom
       key: cache-v1
 
     strategy:
@@ -18,19 +19,18 @@ jobs:
           - ubuntu-latest
           - windows-latest
 
-        php-version:
+        php:
           - "7.4"
           - "8.0"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
-          extensions: ${{ env.extensions }}
+          php-version: ${{ matrix.php }}
           ini-values: date.timezone='UTC'
           tools: composer:v2
           coverage: pcov
@@ -44,38 +44,18 @@ jobs:
         run: echo "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+          key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: |
-              php${{ matrix.php-version }}-composer-
+            php${{ matrix.php }}-composer-
 
       - name: Update composer
         run: composer self-update
 
-      - name: Install dependencies with composer php 7.4
-        if: matrix.php-version == '7.4'
-        run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader
+      - name: Install dependencies with composer
+        run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
-      - name: Install dependencies with composer php 8.0
-        if: matrix.php-version == '8.0'
-        run: composer update --ignore-platform-reqs --prefer-dist --no-interaction --no-progress --optimize-autoloader
-
-      - name: PHPUnit run with coverage on Linux PHP 7.4
-        if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
-        run: vendor/bin/phpunit --coverage-clover=coverage.clover
-
-      - name: PHPUnit run without coverage on Linux PHP 8.0
-        if: matrix.os == 'ubuntu-latest' && matrix.php-version == '8.0'
-        run: vendor/bin/phpunit
-
-      - name: PHPUnit run without coverage on Windows
-        if: matrix.os == 'windows-latest'
-        run: vendor/bin/phpunit
-
-      - name: Code coverage scrutinizer on Linux PHP 7.4
-        if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
-        run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      - name: Run tests with phpunit
+        run: vendor/bin/phpunit --colors=always
