@@ -63,13 +63,20 @@ final class UploadedFileTest extends TestCase
 
     public function testGetStream()
     {
-        $uploadedFile = new UploadedFile($this->stream, $size = 1024, UPLOAD_ERR_OK);
+        $uploadedFile = new UploadedFile($this->stream, 1024, UPLOAD_ERR_OK);
         $this->assertSame($this->stream, $uploadedFile->getStream());
         $this->stream->write($content = 'Content');
         $this->assertSame($content, (string) $uploadedFile->getStream());
         $this->assertSame((string) $this->stream, (string) $uploadedFile->getStream());
 
-        $uploadedFile = new UploadedFile($this->tmpFile, $size = 1024, UPLOAD_ERR_OK);
+        $uploadedFile = new UploadedFile($this->tmpFile, 1024, UPLOAD_ERR_OK);
+        $this->assertInstanceOf(StreamInterface::class, $uploadedFile->getStream());
+        $this->assertInstanceOf(Stream::class, $uploadedFile->getStream());
+        $stream = $uploadedFile->getStream();
+        $stream->write($content = 'Content');
+        $this->assertSame($content, (string) $uploadedFile->getStream());
+
+        $uploadedFile = new UploadedFile(fopen($this->tmpFile, 'wb+'), 1024, UPLOAD_ERR_OK);
         $this->assertInstanceOf(StreamInterface::class, $uploadedFile->getStream());
         $this->assertInstanceOf(Stream::class, $uploadedFile->getStream());
         $stream = $uploadedFile->getStream();
@@ -130,6 +137,34 @@ final class UploadedFileTest extends TestCase
     /**
      * @return array
      */
+    public function invalidStreamOrFilePathProvider(): array
+    {
+        return [
+            'null' => [null],
+            'true' => [true],
+            'false' => [false],
+            'int' => [1],
+            'float' => [1.1],
+            'array' => [['']],
+            'empty-array' => [[]],
+            'object' => [new StdClass()],
+            'callable' => [fn() => null],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidStreamOrFilePathProvider
+     * @param mixed $streamOrFile
+     */
+    public function testConstructorThrowExceptionForInvalidStreamOrFile($streamOrFile): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new UploadedFile($streamOrFile, 1024, UPLOAD_ERR_OK);
+    }
+
+    /**
+     * @return array
+     */
     public function invalidErrorStatusProvider(): array
     {
         return [[-111], [-1], [9], [999]];
@@ -145,7 +180,7 @@ final class UploadedFileTest extends TestCase
         new UploadedFile($this->stream, 1024, $errorStatus);
     }
 
-    public function notOkErrorStatusProvider()
+    public function notOkErrorStatusProvider(): array
     {
         return [
             'UPLOAD_ERR_INI_SIZE'   => [UPLOAD_ERR_INI_SIZE],
@@ -191,6 +226,7 @@ final class UploadedFileTest extends TestCase
             'false' => [false],
             'int' => [1],
             'float' => [1.1],
+            'string' => [''],
             'array' => [['']],
             'empty-array' => [[]],
             'object' => [new StdClass()],
@@ -207,5 +243,12 @@ final class UploadedFileTest extends TestCase
         $uploadedFile = new UploadedFile($this->stream, 1024, UPLOAD_ERR_OK);
         $this->expectException(InvalidArgumentException::class);
         $uploadedFile->moveTo($targetPath);
+    }
+
+    public function testMoveToThrowExceptionForTargetPathIsNotExist(): void
+    {
+        $uploadedFile = new UploadedFile($this->stream, 1024, UPLOAD_ERR_OK);
+        $this->expectException(RuntimeException::class);
+        $uploadedFile->moveTo('path/to/not-exist');
     }
 }

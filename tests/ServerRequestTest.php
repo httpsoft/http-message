@@ -139,10 +139,13 @@ final class ServerRequestTest extends TestCase
 
     public function testWithAttributeAndGetAttributes(): void
     {
-        $request = $this->request->withAttribute('name', 'value');
-        $this->assertNotSame($this->request, $request);
-        $this->assertSame('value', $request->getAttribute('name'));
-        $this->assertSame(['name' => 'value'], $request->getAttributes());
+        $firstRequest = $this->request->withAttribute('name', 'value');
+        $this->assertNotSame($this->request, $firstRequest);
+        $this->assertSame('value', $firstRequest->getAttribute('name'));
+
+        $secondRequest = $firstRequest->withAttribute('name', 'value');
+        $this->assertSame($firstRequest, $secondRequest);
+        $this->assertSame('value', $secondRequest->getAttribute('name'));
     }
 
     public function testWithoutAttributeAndGetAttributes(): void
@@ -150,10 +153,16 @@ final class ServerRequestTest extends TestCase
         $firstRequest = $this->request->withAttribute('name', 'value');
         $this->assertNotSame($this->request, $firstRequest);
         $this->assertSame('value', $firstRequest->getAttribute('name'));
+
         $secondRequest = $firstRequest->withoutAttribute('name');
         $this->assertNotSame($firstRequest, $secondRequest);
         $this->assertNull($secondRequest->getAttribute('name'));
         $this->assertSame([], $secondRequest->getAttributes());
+
+        $thirdRequest = $secondRequest->withoutAttribute('name');
+        $this->assertSame($secondRequest, $thirdRequest);
+        $this->assertNull($thirdRequest->getAttribute('name'));
+        $this->assertSame([], $thirdRequest->getAttributes());
     }
 
     public function testGetAttributePassedDefaultValue(): void
@@ -236,6 +245,10 @@ final class ServerRequestTest extends TestCase
         $uploadedFiles = [
             new UploadedFile('file.txt', 1024, UPLOAD_ERR_OK),
             new UploadedFile('image.png', 67890, UPLOAD_ERR_OK),
+            [
+                new UploadedFile('file.md', 1024, UPLOAD_ERR_OK),
+                new UploadedFile('image.jpg', 67890, UPLOAD_ERR_OK),
+            ],
         ];
 
         $request = $this->request->withUploadedFiles($uploadedFiles);

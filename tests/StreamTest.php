@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace HttpSoft\Tests\Message;
 
 use HttpSoft\Message\Stream;
+use InvalidArgumentException;
+use Phar;
 use RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 use function file_exists;
 use function fopen;
+use function stream_context_create;
 use function stream_get_meta_data;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -67,6 +70,7 @@ final class StreamTest extends TestCase
         $this->assertSame(0, $this->stream->getMetadata('unread_bytes'));
         $this->assertSame(true, $this->stream->getMetadata('seekable'));
         $this->assertSame('php://temp', $this->stream->getMetadata('uri'));
+        $this->assertSame(null, $this->stream->getMetadata('not-exist'));
     }
 
     public function testIsWritableAndWriteAndToString(): void
@@ -139,38 +143,58 @@ final class StreamTest extends TestCase
         $this->assertFalse($stream->isSeekable());
     }
 
+    public function testReadThrowExceptionForStreamIsNotReadable(): void
+    {
+        $stream = new Stream($this->tmpFile, 'w');
+        $this->expectException(RuntimeException::class);
+        $stream->read(1);
+    }
+
+    public function testWriteThrowExceptionForStreamIsNotWritable(): void
+    {
+        $stream = new Stream($this->tmpFile, 'r');
+        $this->expectException(RuntimeException::class);
+        $stream->write('content');
+    }
+
     public function testTellThrowExceptionForInvalidResource(): void
     {
-        $this->expectException(RuntimeException::class);
         $this->stream->close();
+        $this->expectException(RuntimeException::class);
         $this->stream->tell();
     }
 
     public function testSeekThrowExceptionForInvalidResource(): void
     {
-        $this->expectException(RuntimeException::class);
         $this->stream->close();
+        $this->expectException(RuntimeException::class);
         $this->stream->seek(1);
     }
 
     public function testWriteThrowExceptionForInvalidResource(): void
     {
-        $this->expectException(RuntimeException::class);
         $this->stream->close();
+        $this->expectException(RuntimeException::class);
         $this->stream->write('content');
     }
 
     public function testReadThrowExceptionForInvalidResource(): void
     {
-        $this->expectException(RuntimeException::class);
         $this->stream->close();
+        $this->expectException(RuntimeException::class);
         $this->stream->read(1);
     }
 
     public function testGetContentThrowExceptionForInvalidResource(): void
     {
-        $this->expectException(RuntimeException::class);
         $this->stream->close();
+        $this->expectException(RuntimeException::class);
         $this->stream->getContents();
+    }
+
+    public function testConstructorThrowExceptionForInvalidResource(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Stream(stream_context_create(['phar' => ['compress' => Phar::GZ]]));
     }
 }

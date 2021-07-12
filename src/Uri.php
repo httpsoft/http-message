@@ -215,7 +215,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withScheme($scheme): self
+    public function withScheme($scheme): UriInterface
     {
         $this->checkStringType($scheme, 'scheme', __METHOD__);
         $schema = $this->normalizeScheme($scheme);
@@ -232,7 +232,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withUserInfo($user, $password = null): self
+    public function withUserInfo($user, $password = null): UriInterface
     {
         $this->checkStringType($user, 'user', __METHOD__);
 
@@ -254,7 +254,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withHost($host): self
+    public function withHost($host): UriInterface
     {
         $this->checkStringType($host, 'host', __METHOD__);
         $host = $this->normalizeHost($host);
@@ -271,7 +271,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withPort($port): self
+    public function withPort($port): UriInterface
     {
         $port = $this->normalizePort($port);
 
@@ -287,7 +287,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withPath($path): self
+    public function withPath($path): UriInterface
     {
         $this->checkStringType($path, 'path', __METHOD__);
         $path = $this->normalizePath($path);
@@ -304,7 +304,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withQuery($query): self
+    public function withQuery($query): UriInterface
     {
         $this->checkStringType($query, 'query string', __METHOD__);
         $query = $this->normalizeQuery($query);
@@ -321,7 +321,7 @@ final class Uri implements UriInterface
     /**
      * {@inheritDoc}
      */
-    public function withFragment($fragment): self
+    public function withFragment($fragment): UriInterface
     {
         $this->checkStringType($fragment, 'URI fragment', __METHOD__);
         $fragment = $this->normalizeFragment($fragment);

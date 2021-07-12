@@ -103,7 +103,7 @@ final class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritDoc}
      */
-    public function withCookieParams(array $cookies): self
+    public function withCookieParams(array $cookies): ServerRequestInterface
     {
         $new = clone $this;
         $new->cookieParams = $cookies;
@@ -121,7 +121,7 @@ final class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritDoc}
      */
-    public function withQueryParams(array $query): self
+    public function withQueryParams(array $query): ServerRequestInterface
     {
         $new = clone $this;
         $new->queryParams = $query;
@@ -139,7 +139,7 @@ final class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritDoc}
      */
-    public function withUploadedFiles(array $uploadedFiles): self
+    public function withUploadedFiles(array $uploadedFiles): ServerRequestInterface
     {
         $this->validateUploadedFiles($uploadedFiles);
         $new = clone $this;
@@ -160,7 +160,7 @@ final class ServerRequest implements ServerRequestInterface
      *
      * @psalm-suppress DocblockTypeContradiction
      */
-    public function withParsedBody($data): self
+    public function withParsedBody($data): ServerRequestInterface
     {
         if (!is_array($data) && !is_object($data) && $data !== null) {
             throw new InvalidArgumentException(sprintf(
@@ -197,7 +197,7 @@ final class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritDoc}
      */
-    public function withAttribute($name, $value): self
+    public function withAttribute($name, $value): ServerRequestInterface
     {
         if (array_key_exists($name, $this->attributes) && $this->attributes[$name] === $value) {
             return $this;
@@ -211,7 +211,7 @@ final class ServerRequest implements ServerRequestInterface
     /**
      * {@inheritDoc}
      */
-    public function withoutAttribute($name): self
+    public function withoutAttribute($name): ServerRequestInterface
     {
         if (!array_key_exists($name, $this->attributes)) {
             return $this;
