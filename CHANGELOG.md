@@ -1,5 +1,27 @@
 # HTTP Message Change Log
 
+## 1.0.9 - 2021.07.13
+
+### Added
+
+- [#11](https://github.com/httpsoft/http-message/pull/11) adds caching of stream metadata to improve performance when calling the `HttpSoft\Message\StreamTrait` methods again: `getSize()`, `isSeekable()`, `isWritable()`, `isReadable()`.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#10](https://github.com/httpsoft/http-message/pull/10) adds unit tests and Psalm improvements, updates of workflow actions.
+
 ## 1.0.8 - 2021.02.20
 
 ### Added
