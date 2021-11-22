@@ -97,6 +97,7 @@ final class UploadedFile implements UploadedFileInterface
      * @param int $error
      * @param string|null $clientFilename
      * @param string|null $clientMediaType
+     * @psalm-suppress DocblockTypeContradiction
      * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function __construct(
