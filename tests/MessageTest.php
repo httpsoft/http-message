@@ -222,7 +222,17 @@ final class MessageTest extends TestCase
      */
     public function invalidHeaderValueProvider(): array
     {
-        return $this->getInvalidValues([[null], ["Va\nlue"], [["Va\r\nlue"]], ["Va\r)\nlue"]]);
+        return $this->getInvalidValues([
+            [null],
+            ["Va\nlue"],
+            [["Va\r\nlue"]],
+            ["Va\r)\nlue"],
+            ["\r"],
+            ["\r\n"],
+            ["\0x00"],
+            ["\0x0A"],
+            ["\0x0D"],
+        ]);
     }
 
     /**
