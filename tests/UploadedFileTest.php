@@ -251,4 +251,13 @@ final class UploadedFileTest extends TestCase
         $this->expectException(RuntimeException::class);
         $uploadedFile->moveTo('path/to/not-exist');
     }
+
+    public function testGetStreamContentIfUploadedFileNotStream()
+    {
+        file_put_contents($this->tmpFile, $content = 'Content');
+        $uploadedFile = new UploadedFile($this->tmpFile, 1024, UPLOAD_ERR_OK);
+        $this->assertInstanceOf(StreamInterface::class, $uploadedFile->getStream());
+        $this->assertInstanceOf(Stream::class, $uploadedFile->getStream());
+        $this->assertSame($content, (string) $uploadedFile->getStream());
+    }
 }
