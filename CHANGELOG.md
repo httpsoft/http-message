@@ -1,5 +1,27 @@
 # HTTP Message Change Log
 
+## 1.0.10 - 2022.07.21
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#13](https://github.com/httpsoft/http-message/pull/13) Adds a mode for opening a stream to `HttpSoft\Message\UploadedFile`.
+
 ## 1.0.9 - 2021.07.13
 
 ### Added
