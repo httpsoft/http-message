@@ -1,6 +1,21 @@
 on:
-  - pull_request
-  - push
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - 'phpunit.xml.dist'
+
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - 'phpunit.xml.dist'
 
 name: static
 
@@ -18,37 +33,39 @@ jobs:
         php:
           - "7.4"
           - "8.0"
+          - "8.1"
+          - "8.2"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout.
+        uses: actions/checkout@v3
 
-      - name: Install PHP
+      - name: Install PHP with extensions.
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: memory_limit=-1
           tools: composer:v2
 
-      - name: Determine composer cache directory
+      - name: Determine composer cache directory.
         run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
 
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+      - name: Cache dependencies installed with composer.
+        uses: actions/cache@v3
         with:
           path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php }}-composer-
 
-      - name: Update composer
+      - name: Update composer.
         run: composer self-update
 
-      - name: Install dependencies with composer
+      - name: Install dependencies with composer.
         run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
-      - name: PHPCS check
+      - name: PHPCS check.
         run: vendor/bin/phpcs
 
-      - name: Psalm static analysis
+      - name: Psalm static analysis.
         run: vendor/bin/psalm --no-progress
