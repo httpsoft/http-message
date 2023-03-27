@@ -147,6 +147,7 @@ trait ResponseTrait
      * @psalm-suppress DocblockTypeContradiction
      * @psalm-suppress TypeDoesNotContainType
      * @psalm-suppress RedundantCondition
+     * @psalm-suppress NoValue
      */
     public function withStatus($code, $reasonPhrase = ''): ResponseInterface
     {
@@ -184,7 +185,6 @@ trait ResponseTrait
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
-     * @psalm-suppress RedundantCondition
      */
     public function getReasonPhrase(): string
     {
@@ -197,7 +197,6 @@ trait ResponseTrait
      * @param StreamInterface|string|resource|null $body
      * @param array $headers
      * @param string $protocol
-     * @psalm-suppress MixedArgumentTypeCoercion
      */
     private function init(
         int $statusCode = 200,

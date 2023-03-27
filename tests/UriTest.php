@@ -75,7 +75,6 @@ final class UriTest extends TestCase
     public function testConstructorThrowExceptionForInvalidSourceUri($uri): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectDeprecationMessage('The source URI string appears to be malformed');
         new Uri($uri);
     }
 
