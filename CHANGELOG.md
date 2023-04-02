@@ -1,5 +1,27 @@
 # HTTP Message Change Log
 
+## 1.0.11 - 2023.04.02
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#15](https://github.com/httpsoft/http-message/pull/15) Fixes normalizing leading slashes for `getPath()` and `__toString()` methods to `HttpSoft\Message\Uri` class.
+
 ## 1.0.10 - 2022.07.21
 
 ### Added
