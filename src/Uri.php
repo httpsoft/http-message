@@ -120,7 +120,14 @@ final class Uri implements UriInterface
         }
 
         if ($this->path !== '') {
-            $this->cache .= $authority ? '/' . ltrim($this->path, '/') : $this->path;
+            if ($authority === '') {
+                // If the path is starting with more than one "/" and no authority is present,
+                // the starting slashes MUST be reduced to one.
+                $this->cache .= $this->path[0] === '/' ? '/' . ltrim($this->path, '/') : $this->path;
+            } else {
+                // If the path is rootless and an authority is present, the path MUST be prefixed by "/".
+                $this->cache .= $this->path[0] === '/' ? $this->path : '/' . $this->path;
+            }
         }
 
         if ($this->query !== '') {
@@ -193,7 +200,16 @@ final class Uri implements UriInterface
      */
     public function getPath(): string
     {
-        return $this->path;
+        if ($this->path === '' || $this->path === '/') {
+            return $this->path;
+        }
+
+        if ($this->path[0] !== '/') {
+            // If the path is rootless and an authority is present, the path MUST be prefixed by "/".
+            return $this->host === '' ? $this->path : '/' . $this->path;
+        }
+
+        return '/' . ltrim($this->path, '/');
     }
 
     /**
@@ -438,8 +454,7 @@ final class Uri implements UriInterface
             return $path;
         }
 
-        $path = $this->encode($path, '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/');
-        return $path === '' ? '' : (($path[0] === '/') ? '/' . ltrim($path, '/') : $path);
+        return $this->encode($path, '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/');
     }
 
     /**
