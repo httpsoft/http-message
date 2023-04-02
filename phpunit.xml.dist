@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
-        bootstrap="./vendor/autoload.php"
-        executionOrder="depends,defects"
-        beStrictAboutCoversAnnotation="true"
-        beStrictAboutOutputDuringTests="true"
-        beStrictAboutTodoAnnotatedTests="true"
-        convertWarningsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertErrorsToExceptions="true"
-        stopOnFailure="false"
-        verbose="true"
-        colors="true"
+    bootstrap="vendor/autoload.php"
+    executionOrder="random"
+    beStrictAboutCoversAnnotation="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    convertWarningsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertErrorsToExceptions="true"
+    resolveDependencies="true"
+    stopOnFailure="false"
+    failOnWarning="true"
+    failOnRisky="true"
+    verbose="true"
+    colors="true"
 >
     <php>
         <ini name="error_reporting" value="-1" />
@@ -30,9 +31,9 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src/</directory>
-        </whitelist>
-    </filter>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </coverage>
 </phpunit>

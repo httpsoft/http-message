@@ -1,6 +1,21 @@
 on:
-  - pull_request
-  - push
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - 'psalm.xml.dist'
+
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - 'psalm.xml.dist'
 
 name: build
 
@@ -22,12 +37,14 @@ jobs:
         php:
           - "7.4"
           - "8.0"
+          - "8.1"
+          - "8.2"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout.
+        uses: actions/checkout@v3
 
-      - name: Install PHP
+      - name: Install PHP with extensions.
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
@@ -35,27 +52,27 @@ jobs:
           tools: composer:v2
           coverage: pcov
 
-      - name: Determine composer cache directory on Linux
+      - name: Determine composer cache directory on Linux.
         if: matrix.os == 'ubuntu-latest'
         run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
 
-      - name: Determine composer cache directory on Windows
+      - name: Determine composer cache directory on Windows.
         if: matrix.os == 'windows-latest'
         run: echo "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+      - name: Cache dependencies installed with composer.
+        uses: actions/cache@v3
         with:
           path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php }}-composer-
 
-      - name: Update composer
+      - name: Update composer.
         run: composer self-update
 
-      - name: Install dependencies with composer
+      - name: Install dependencies with composer.
         run: composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
-      - name: Run tests with phpunit
+      - name: Run tests with phpunit.
         run: vendor/bin/phpunit --colors=always

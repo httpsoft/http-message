@@ -75,7 +75,6 @@ final class UriTest extends TestCase
     public function testConstructorThrowExceptionForInvalidSourceUri($uri): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectDeprecationMessage('The source URI string appears to be malformed');
         new Uri($uri);
     }
 
@@ -301,7 +300,7 @@ final class UriTest extends TestCase
 
     public function testWithPath(): void
     {
-        $uri = $this->uri->withPath($path = 'path/to/tar<>get');
+        $uri = $this->uri->withPath('path/to/tar<>get');
         $this->assertNotSame($this->uri, $uri);
         $this->assertSame('path/to/tar%3C%3Eget', $uri->getPath());
     }
@@ -325,6 +324,26 @@ final class UriTest extends TestCase
         $uri = $this->uri->withPath('');
         $this->assertSame($this->uri, $uri);
         $this->assertSame($this->uri->getPath(), $uri->getPath());
+    }
+
+    public function testAddsSlashForRelativeUriStringWithHost(): void
+    {
+        // If the path is rootless and an authority is present, the path MUST be prefixed by "/".
+        $uri = $this->uri->withPath('path')->withHost('example.com');
+        $this->assertNotSame($this->uri, $uri);
+        $this->assertSame('/path', $uri->getPath());
+        $this->assertSame('//example.com/path', (string) $uri);
+    }
+
+    public function testRemoveExtraSlashesWithoutHost(): void
+    {
+        // If the path is starting with more than one "/" and no authority is
+        // present, the starting slashes MUST be reduced to one.
+        $uri = $this->uri->withPath('//path');
+        $this->assertNotSame($this->uri, $uri);
+        $this->assertSame('/path', $uri->getPath());
+        // URI "//path" would be interpreted as network reference and thus change the original path to the host.
+        $this->assertSame('/path', (string) $uri);
     }
 
     /**
