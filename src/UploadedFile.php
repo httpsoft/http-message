@@ -170,7 +170,7 @@ final class UploadedFile implements UploadedFileInterface
     /**
      * {@inheritdoc}
      *
-     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress NoValue, RedundantCondition, TypeDoesNotContainType
      */
     public function moveTo($targetPath): void
     {
