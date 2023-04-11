@@ -377,7 +377,7 @@ trait MessageTrait
      */
     private function normalizeHeaderName($name): string
     {
-        if (!is_string($name) || !preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $name)) {
+        if (!is_string($name) || !preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name)) {
             throw new InvalidArgumentException(sprintf(
                 '`%s` is not valid header name.',
                 (is_object($name) ? get_class($name) : (is_string($name) ? $name : gettype($name)))
@@ -403,7 +403,7 @@ trait MessageTrait
         }
 
         foreach ($value as $v) {
-            if ((!is_string($v) && !is_numeric($v)) || !preg_match('/^[ \t\x21-\x7E\x80-\xFF]*$/', (string) $v)) {
+            if ((!is_string($v) && !is_numeric($v)) || !preg_match('/^[ \t\x21-\x7E\x80-\xFF]*$/D', (string) $v)) {
                 throw new InvalidArgumentException(sprintf(
                     '"%s" is not valid header value.',
                     (is_object($v) ? get_class($v) : (is_string($v) ? $v : gettype($v)))

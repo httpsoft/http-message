@@ -148,4 +148,34 @@ final class ResponseTest extends TestCase
 
         return $common;
     }
+
+    /**
+     * @dataProvider invalidWithHeaderProvider
+     */
+    public function testWithInvalidHeader($header, $headerValue, $expectedMessage): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->response->withHeader($header, $headerValue);
+    }
+
+    public static function invalidWithHeaderProvider(): array
+    {
+        return [
+            ['foo', [], 'Header value must be a string or an array of strings, empty array given.'],
+            ['foo', new stdClass(),  '"stdClass" is not valid header value.'],
+            [[], 'foo', '`array` is not valid header name.'],
+            [false, 'foo', '`boolean` is not valid header name.'],
+            [new stdClass(), 'foo', '`stdClass` is not valid header name.'],
+            ['', 'foo', '`` is not valid header name.'],
+            ["Content-Type\r\n\r\n", 'foo', "`Content-Type\r\n\r\n` is not valid header name."],
+            ["Content-Type\r\n", 'foo', "`Content-Type\r\n` is not valid header name."],
+            ["Content-Type\n", 'foo', "`Content-Type\n` is not valid header name."],
+            ["\r\nContent-Type", 'foo',"`\r\nContent-Type` is not valid header name."],
+            ["\nContent-Type", 'foo', "`\nContent-Type` is not valid header name."],
+            ["\n", 'foo', "`\n` is not valid header name."],
+            ["\r\n", 'foo', "`\r\n` is not valid header name."],
+            ["\t", 'foo', "`\t` is not valid header name."],
+        ];
+    }
 }
