@@ -1,5 +1,11 @@
 # HTTP Message Change Log
 
+## 1.0.12 - 2023.04.17
+
+### Fixed
+
+- [#18](https://github.com/httpsoft/http-message/pull/18) Fixes validation of header names and values to `HttpSoft\Message\MessageTrait`.
+
 ## 1.0.11 - 2023.04.02
 
 ### Added
