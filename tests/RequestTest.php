@@ -12,6 +12,7 @@ use Psr\Http\Message\UriInterface;
 use stdClass;
 
 use function array_merge;
+use function chr;
 
 final class RequestTest extends TestCase
 {
@@ -174,5 +175,50 @@ final class RequestTest extends TestCase
         }
 
         return $common;
+    }
+
+    /**
+     * @dataProvider provideHeaderValuesContainingNotAllowedChars
+     */
+    public function testCannotHaveHeaderWithInvalidValue(string $name): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $request = new Request('GET', 'https://example.com/');
+        $request->withHeader($name, 'Bar');
+    }
+
+    public static function provideHeaderValuesContainingNotAllowedChars(): array
+    {
+        // Explicit tests for newlines as the most common exploit vector.
+        $tests = [
+            ["new\nline"],
+            ["new\r\nline"],
+            ["new\rline"],
+            ["new\r\n line"],
+            ["newline\n"],
+            ["\nnewline"],
+            ["newline\r\n"],
+            ["\n\rnewline"],
+        ];
+
+        for ($i = 0; $i <= 0xff; $i++) {
+            if (chr($i) === "\t") {
+                continue;
+            }
+            if (chr($i) === " ") {
+                continue;
+            }
+            if ($i >= 0x21 && $i <= 0x7e) {
+                continue;
+            }
+            if ($i >= 0x80) {
+                continue;
+            }
+
+            $tests[] = ["foo" . chr($i) . "bar"];
+            $tests[] = ["foo" . chr($i)];
+        }
+
+        return $tests;
     }
 }
