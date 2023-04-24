@@ -433,7 +433,7 @@ final class Uri implements UriInterface
 
         if ($port < 1 || $port > 65535) {
             throw new InvalidArgumentException(sprintf(
-                'Invalid port "%d" specified. It must be a valid TCP/UDP port in range 2..65535.',
+                'Invalid port "%d" specified. It must be a valid TCP/UDP port in range 1..65535.',
                 $port
             ));
         }
