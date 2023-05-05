@@ -1,5 +1,15 @@
 # HTTP Message Change Log
 
+## 1.1.0 - 2023.05.05
+
+### Changed
+
+- [#21](https://github.com/httpsoft/http-message/pull/21) Allows `psr/http-message` package version 2.
+
+### Fixed
+
+- [#19](https://github.com/httpsoft/http-message/pull/19) Fixes min and max allowed ports in exception message to `HttpSoft\Message\Uri`.
+
 ## 1.0.12 - 2023.04.17
 
 ### Fixed
