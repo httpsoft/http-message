@@ -22,6 +22,7 @@ use function is_string;
 use function preg_match;
 use function sprintf;
 use function strtolower;
+use function trim;
 
 /**
  * Trait implementing the methods defined in `Psr\Http\Message\MessageInterface`.
