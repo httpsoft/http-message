@@ -388,7 +388,7 @@ final class Uri implements UriInterface
             return '';
         }
 
-        $pattern = '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=]+|%(?![A-Fa-f0-9]{2}))/u';
+        $pattern = '/(?:[^%a-zA-Z0-9_\-\.~\pL!\$&\'\(\)\*\+,;=]+|%(?![A-Fa-f0-9]{2}))/u';
         $userInfo = $this->encode($user, $pattern);
 
         if ($pass !== null) {
@@ -454,7 +454,7 @@ final class Uri implements UriInterface
             return $path;
         }
 
-        return $this->encode($path, '/(?:[^a-zA-Z0-9_\-\.~:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/');
+        return $this->encode($path, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/]++|%(?![A-Fa-f0-9]{2}))/');
     }
 
     /**
@@ -474,7 +474,7 @@ final class Uri implements UriInterface
             $query = ltrim($query, '?');
         }
 
-        return $this->encode($query, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/');
+        return $this->encode($query, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/');
     }
 
     /**
@@ -493,7 +493,7 @@ final class Uri implements UriInterface
             $fragment = ltrim($fragment, '#');
         }
 
-        return $this->encode($fragment, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/');
+        return $this->encode($fragment, '/(?:[^a-zA-Z0-9_\-\.~!\$&\'\(\)\*\+,;=%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/');
     }
 
     /**
