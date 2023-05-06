@@ -444,23 +444,24 @@ final class UriTest extends TestCase
 
     public function testUtf8Host(): void
     {
-        $uri = (new Uri())->withHost($host = '例子.例子');
-        $this->assertSame($host, $uri->getHost());
-        $this->assertSame('//' . $host, (string) $uri);
-
         $uri = new Uri('https://ουτοπία.δπθ.gr/');
         $this->assertSame('ουτοπία.δπθ.gr', $uri->getHost());
         $new = $uri->withHost($host = '程式设计.com');
         $this->assertSame($host, $new->getHost());
 
+        $uri = (new Uri())->withHost($host = '例子.例子');
+        $this->assertSame($host, $uri->getHost());
+        $this->assertSame('//' . $host, (string) $uri);
+
         $uri = (new Uri())->withHost($host = 'παράδειγμα.δοκιμή');
         $this->assertSame($host, $uri->getHost());
         $this->assertSame('//' . $host, (string) $uri);
 
-        $uri = new Uri('https://яндекс.рф');
-        $this->assertSame('яндекс.рф', $uri->getHost());
+        $uri = (new Uri())->withHost($host = 'яндекс.рф');
+        $this->assertSame($host, $uri->getHost());
 
-        $uri = new Uri('https://яндекAс.рф');
+        // "A" is a Latin letter
+        $uri = (new Uri())->withHost('яндекAс.рф');
         $this->assertSame('яндекaс.рф', $uri->getHost());
     }
 
