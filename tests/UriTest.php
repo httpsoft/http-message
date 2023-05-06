@@ -442,6 +442,27 @@ final class UriTest extends TestCase
         $this->uri->withQuery($query);
     }
 
+    public function testPercentageEncodedWillNotBeReEncoded(): void
+    {
+        $uri = new Uri('https://us%40er:pa%23ss@example.com/pa<th/to/tar>get/?qu^ery=str|ing#frag%ment');
+        $this->assertSame(
+            'https://us%40er:pa%23ss@example.com/pa%3Cth/to/tar%3Eget/?qu%5Eery=str%7Cing#frag%25ment',
+            (string) $uri,
+        );
+
+        $newUri = new Uri((string) $uri);
+        $this->assertSame((string) $uri, (string) $newUri);
+
+        $uri = (new Uri($path = '/pa%3C%3Eth'))->withPath($path);
+        $this->assertSame($path, $uri->getPath());
+
+        $uri = (new Uri('?' . $query = 'que%3C%3Ery=str%7Cing'))->withQuery($query);
+        $this->assertSame($query, $uri->getQuery());
+
+        $uri = (new Uri('#' . $fragment = 'frag%3C%3Ement'))->withFragment($fragment);
+        $this->assertSame($fragment, $uri->getFragment());
+    }
+
     public function testUtf8Host(): void
     {
         $uri = new Uri('https://ουτοπία.δπθ.gr/');
@@ -463,27 +484,6 @@ final class UriTest extends TestCase
         // "A" is a Latin letter
         $uri = (new Uri())->withHost('яндекAс.рф');
         $this->assertSame('яндекaс.рф', $uri->getHost());
-    }
-
-    public function testPercentageEncodedWillNotBeReEncoded(): void
-    {
-        $uri = new Uri('https://us%40er:pa%23ss@example.com/pa<th/to/tar>get/?qu^ery=str|ing#frag%ment');
-        $this->assertSame(
-            'https://us%40er:pa%23ss@example.com/pa%3Cth/to/tar%3Eget/?qu%5Eery=str%7Cing#frag%25ment',
-            (string) $uri,
-        );
-
-        $newUri = new Uri((string) $uri);
-        $this->assertSame((string) $uri, (string) $newUri);
-
-        $uri = (new Uri($path = '/pa%3C%3Eth'))->withPath($path);
-        $this->assertSame($path, $uri->getPath());
-
-        $uri = (new Uri('?' . $query = 'que%3C%3Ery=str%7Cing'))->withQuery($query);
-        $this->assertSame($query, $uri->getQuery());
-
-        $uri = (new Uri('#' . $fragment = 'frag%3C%3Ement'))->withFragment($fragment);
-        $this->assertSame($fragment, $uri->getFragment());
     }
 
     public function testIPv6Host(): void
