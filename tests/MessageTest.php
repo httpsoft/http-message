@@ -202,6 +202,28 @@ final class MessageTest extends TestCase
     /**
      * @return array
      */
+    public function trimmedHeaderValuesProvider(): array
+    {
+        return [
+            [(new Message())->withHeader('Name', [" \t \tValue\t \t "])],
+            [(new Message())->withHeader('Name', " \t \tValue\t \t ")],
+            [(new Message())->withAddedHeader('Name', " \t \tValue\t \t ")],
+        ];
+    }
+
+    /**
+     * @dataProvider trimmedHeaderValuesProvider
+     */
+    public function testHeaderValuesAreTrimmed(Message $message): void
+    {
+        $this->assertSame(['Name' => ['Value']], $message->getHeaders());
+        $this->assertSame('Value', $message->getHeaderLine('name'));
+        $this->assertSame(['Value'], $message->getHeader('name'));
+    }
+
+    /**
+     * @return array
+     */
     public function invalidHeaderNameProvider(): array
     {
         return $this->getInvalidValues([[null], [1], ['Na\me'], ['Na/me'], ['Na<me'], ['Na>me']]);

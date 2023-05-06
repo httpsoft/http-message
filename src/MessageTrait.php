@@ -371,6 +371,8 @@ trait MessageTrait
     }
 
     /**
+     * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     *
      * @param mixed $name
      * @return string
      * @throws InvalidArgumentException for invalid header name.
@@ -388,6 +390,8 @@ trait MessageTrait
     }
 
     /**
+     * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     *
      * @param mixed $value
      * @return array
      * @throws InvalidArgumentException for invalid header name.
@@ -402,6 +406,8 @@ trait MessageTrait
             );
         }
 
+        $normalizedValues = [];
+
         foreach ($value as $v) {
             if ((!is_string($v) && !is_numeric($v)) || !preg_match('/^[ \t\x21-\x7E\x80-\xFF]*$/D', (string) $v)) {
                 throw new InvalidArgumentException(sprintf(
@@ -409,9 +415,11 @@ trait MessageTrait
                     (is_object($v) ? get_class($v) : (is_string($v) ? $v : gettype($v)))
                 ));
             }
+
+            $normalizedValues[] = trim((string) $v, " \t");
         }
 
-        return $value;
+        return $normalizedValues;
     }
 
     /**
