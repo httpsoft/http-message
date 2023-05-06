@@ -22,6 +22,7 @@ use function preg_replace_callback;
 use function rawurlencode;
 use function sprintf;
 use function strtolower;
+use function strtr;
 
 final class Uri implements UriInterface
 {
@@ -406,7 +407,7 @@ final class Uri implements UriInterface
      */
     private function normalizeHost(string $host): string
     {
-        return strtolower($host);
+        return strtr($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
     }
 
     /**

@@ -442,17 +442,13 @@ final class UriTest extends TestCase
         $this->uri->withQuery($query);
     }
 
-    public function testUtf8Host(): void
-    {
-        $uri = (new Uri())->withHost($host = '例子.例子');
-        $this->assertSame($host, $uri->getHost());
-        $this->assertSame('//' . $host, (string) $uri);
-    }
-
     public function testPercentageEncodedWillNotBeReEncoded(): void
     {
-        $uri = new Uri('https://example.com/pa<th/to/tar>get/?qu^ery=str|ing#frag%ment');
-        $this->assertSame('https://example.com/pa%3Cth/to/tar%3Eget/?qu%5Eery=str%7Cing#frag%25ment', (string) $uri);
+        $uri = new Uri('https://us%40er:pa%23ss@example.com/pa<th/to/tar>get/?qu^ery=str|ing#frag%ment');
+        $this->assertSame(
+            'https://us%40er:pa%23ss@example.com/pa%3Cth/to/tar%3Eget/?qu%5Eery=str%7Cing#frag%25ment',
+            (string) $uri,
+        );
 
         $newUri = new Uri((string) $uri);
         $this->assertSame((string) $uri, (string) $newUri);
@@ -465,6 +461,41 @@ final class UriTest extends TestCase
 
         $uri = (new Uri('#' . $fragment = 'frag%3C%3Ement'))->withFragment($fragment);
         $this->assertSame($fragment, $uri->getFragment());
+    }
+
+    public function testUtf8Host(): void
+    {
+        $uri = new Uri('https://ουτοπία.δπθ.gr/');
+        $this->assertSame('ουτοπία.δπθ.gr', $uri->getHost());
+        $new = $uri->withHost($host = '程式设计.com');
+        $this->assertSame($host, $new->getHost());
+
+        $uri = (new Uri())->withHost($host = '例子.例子');
+        $this->assertSame($host, $uri->getHost());
+        $this->assertSame('//' . $host, (string) $uri);
+
+        $uri = (new Uri())->withHost($host = 'παράδειγμα.δοκιμή');
+        $this->assertSame($host, $uri->getHost());
+        $this->assertSame('//' . $host, (string) $uri);
+
+        $uri = (new Uri())->withHost($host = 'яндекс.рф');
+        $this->assertSame($host, $uri->getHost());
+
+        // "A" is a Latin letter
+        $uri = (new Uri())->withHost('яндекAс.рф');
+        $this->assertSame('яндекaс.рф', $uri->getHost());
+    }
+
+    public function testIPv6Host(): void
+    {
+        $uri = new Uri('https://[2a00:f48:1008::212:183:10]');
+        $this->assertSame('[2a00:f48:1008::212:183:10]', $uri->getHost());
+
+        $uri = new Uri('https://[2a00:f48:1008::212:183:10]:56/path/to/target?key=value');
+        $this->assertSame('[2a00:f48:1008::212:183:10]', $uri->getHost());
+        $this->assertSame(56, $uri->getPort());
+        $this->assertSame('/path/to/target', $uri->getPath());
+        $this->assertSame('key=value', $uri->getQuery());
     }
 
     /**
