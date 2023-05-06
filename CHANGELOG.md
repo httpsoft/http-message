@@ -1,5 +1,13 @@
 # HTTP Message Change Log
 
+## 1.1.1 - 2023.05.06
+
+### Fixed
+
+- [#22](https://github.com/httpsoft/http-message/pull/22) Fixes already encoded userinfo to `HttpSoft\Message\Uri`.
+- [#23](https://github.com/httpsoft/http-message/pull/23) Fixes use of UTF-8 characters to host in `HttpSoft\Message\Uri`.
+- [#24](https://github.com/httpsoft/http-message/pull/24) Fixes header values normalization by trimming in `HttpSoft\Message\MessageTrait`.
+
 ## 1.1.0 - 2023.05.05
 
 ### Changed
