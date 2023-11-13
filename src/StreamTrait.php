@@ -6,6 +6,7 @@ namespace HttpSoft\Message;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Throwable;
 
 use function array_key_exists;
 use function fclose;
@@ -354,7 +355,12 @@ trait StreamTrait
             return $key ? null : [];
         }
 
-        $metadata = stream_get_meta_data($this->resource);
+        try {
+            $metadata = stream_get_meta_data($this->resource);
+        } catch (Throwable $e) {
+            $this->detach();
+            throw new RuntimeException('Unable to read stream contents: ' . $e->getMessage());
+        }
 
         if ($key === null) {
             return $metadata;
