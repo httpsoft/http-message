@@ -335,15 +335,16 @@ trait StreamTrait
         }
 
         $exception = null;
+        $message = 'Unable to read stream contents';
 
-        set_error_handler(static function ($type, $message) use (&$exception) {
-            throw $exception = new RuntimeException('Unable to read stream contents: ' . $message);
+        set_error_handler(static function (int $errno, string $errstr) use (&$exception, $message) {
+            throw $exception = new RuntimeException("$message: $errstr");
         });
 
         try {
             return stream_get_contents($this->resource);
         } catch (Throwable $e) {
-            throw $e === $exception ? $e : new RuntimeException('Unable to read stream contents: ' . $e->getMessage(), 0, $e);
+            throw $e === $exception ? $e : new RuntimeException("$message: {$e->getMessage()}", 0, $e);
         } finally {
             restore_error_handler();
         }
