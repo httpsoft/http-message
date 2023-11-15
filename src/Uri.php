@@ -506,6 +506,8 @@ final class Uri implements UriInterface
      * @param string $string
      * @param string $pattern
      * @return string
+     *
+     * @psalm-param non-empty-string $pattern
      */
     private function encode(string $string, string $pattern): string
     {

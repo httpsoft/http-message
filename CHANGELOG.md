@@ -1,5 +1,11 @@
 # HTTP Message Change Log
 
+## 1.1.1 - Under development
+
+### Fixed
+
+- [#27](https://github.com/httpsoft/http-message/pull/27) Fix error handling on stream reading 
+
 ## 1.1.1 - 2023.05.06
 
 ### Fixed
