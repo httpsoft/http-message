@@ -321,7 +321,6 @@ trait StreamTrait
      *
      * @return string
      * @throws RuntimeException if unable to read or an error occurs while reading.
-     * @psalm-suppress PossiblyNullArgument
      */
     public function getContents(): string
     {
