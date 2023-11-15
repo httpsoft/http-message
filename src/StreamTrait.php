@@ -325,6 +325,10 @@ trait StreamTrait
      */
     public function getContents(): string
     {
+        if (!$this->resource) {
+            throw new RuntimeException('No resource available. Cannot read.');
+        }
+
         if (!$this->isReadable()) {
             throw new RuntimeException('Stream is not readable.');
         }
@@ -361,6 +365,7 @@ trait StreamTrait
         try {
             $metadata = stream_get_meta_data($this->resource);
         } catch (Throwable $e) {
+            $this->detach();
             return $key ? null : [];
         }
 
