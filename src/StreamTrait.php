@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 
-use function array_key_exists;
 use function fclose;
 use function feof;
 use function fopen;
@@ -322,16 +321,23 @@ trait StreamTrait
      *
      * @return string
      * @throws RuntimeException if unable to read or an error occurs while reading.
-     * @psalm-suppress PossiblyNullArgument
      */
     public function getContents(): string
     {
+        if (!$this->resource) {
+            throw new RuntimeException('No resource available. Cannot read.');
+        }
+
         if (!$this->isReadable()) {
             throw new RuntimeException('Stream is not readable.');
         }
 
-        if (($result = stream_get_contents($this->resource)) === false) {
-            throw new RuntimeException('Error reading stream.');
+        try {
+            if (($result = stream_get_contents($this->resource)) === false) {
+                throw new RuntimeException('Stream is detached.');
+            }
+        } catch (Throwable $e) {
+            throw new RuntimeException('Unable to read stream contents: ' . $e->getMessage());
         }
 
         return $result;
@@ -359,18 +365,14 @@ trait StreamTrait
             $metadata = stream_get_meta_data($this->resource);
         } catch (Throwable $e) {
             $this->detach();
-            throw new RuntimeException('Unable to read stream contents: ' . $e->getMessage());
+            return $key ? null : [];
         }
 
         if ($key === null) {
             return $metadata;
         }
 
-        if (array_key_exists($key, $metadata)) {
-            return $metadata[$key];
-        }
-
-        return null;
+        return $metadata[$key] ?? null;
     }
 
     /**
