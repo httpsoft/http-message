@@ -19,6 +19,8 @@ use function fwrite;
 use function get_resource_type;
 use function is_resource;
 use function is_string;
+use function restore_error_handler;
+use function set_error_handler;
 use function stream_get_contents;
 use function stream_get_meta_data;
 use function strpos;
@@ -332,15 +334,19 @@ trait StreamTrait
             throw new RuntimeException('Stream is not readable.');
         }
 
-        try {
-            if (($result = stream_get_contents($this->resource)) === false) {
-                throw new RuntimeException('Stream is detached.');
-            }
-        } catch (Throwable $e) {
-            throw new RuntimeException('Unable to read stream contents: ' . $e->getMessage());
-        }
+        $exception = null;
 
-        return $result;
+        set_error_handler(static function ($type, $message) use (&$exception) {
+            throw $exception = new RuntimeException('Unable to read stream contents: ' . $message);
+        });
+
+        try {
+            return stream_get_contents($this->resource);
+        } catch (Throwable $e) {
+            throw $e === $exception ? $e : new RuntimeException('Unable to read stream contents: ' . $e->getMessage(), 0, $e);
+        } finally {
+            restore_error_handler();
+        }
     }
 
     /**
