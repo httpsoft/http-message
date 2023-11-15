@@ -1,10 +1,10 @@
 # HTTP Message Change Log
 
-## 1.1.1 - Under development
+## 1.1.2 - 2023.11.15
 
 ### Fixed
 
-- [#27](https://github.com/httpsoft/http-message/pull/27) Fix error handling on stream reading 
+- [#27](https://github.com/httpsoft/http-message/pull/27) Fixes error handling on stream reading to `HttpSoft\Message\StreamTrait`.
 
 ## 1.1.1 - 2023.05.06
 
