@@ -19,6 +19,8 @@ use function fwrite;
 use function get_resource_type;
 use function is_resource;
 use function is_string;
+use function restore_error_handler;
+use function set_error_handler;
 use function stream_get_contents;
 use function stream_get_meta_data;
 use function strpos;
@@ -89,13 +91,15 @@ trait StreamTrait
      * Closes the stream and any underlying resources.
      *
      * @return void
-     * @psalm-suppress PossiblyNullArgument
      */
     public function close(): void
     {
         if ($this->resource) {
             $resource = $this->detach();
-            fclose($resource);
+
+            if (is_resource($resource)) {
+                fclose($resource);
+            }
         }
     }
 
@@ -332,15 +336,20 @@ trait StreamTrait
             throw new RuntimeException('Stream is not readable.');
         }
 
-        try {
-            if (($result = stream_get_contents($this->resource)) === false) {
-                throw new RuntimeException('Stream is detached.');
-            }
-        } catch (Throwable $e) {
-            throw new RuntimeException('Unable to read stream contents: ' . $e->getMessage());
-        }
+        $exception = null;
+        $message = 'Unable to read stream contents';
 
-        return $result;
+        set_error_handler(static function (int $errno, string $errstr) use (&$exception, $message) {
+            throw $exception = new RuntimeException("$message: $errstr");
+        });
+
+        try {
+            return stream_get_contents($this->resource);
+        } catch (Throwable $e) {
+            throw $e === $exception ? $e : new RuntimeException("$message: {$e->getMessage()}", 0, $e);
+        } finally {
+            restore_error_handler();
+        }
     }
 
     /**
@@ -357,16 +366,11 @@ trait StreamTrait
      */
     public function getMetadata($key = null)
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return $key ? null : [];
         }
 
-        try {
-            $metadata = stream_get_meta_data($this->resource);
-        } catch (Throwable $e) {
-            $this->detach();
-            return $key ? null : [];
-        }
+        $metadata = stream_get_meta_data($this->resource);
 
         if ($key === null) {
             return $metadata;
