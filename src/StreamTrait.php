@@ -91,13 +91,15 @@ trait StreamTrait
      * Closes the stream and any underlying resources.
      *
      * @return void
-     * @psalm-suppress PossiblyNullArgument
      */
     public function close(): void
     {
         if ($this->resource) {
             $resource = $this->detach();
-            fclose($resource);
+
+            if (is_resource($resource)) {
+                fclose($resource);
+            }
         }
     }
 
@@ -364,16 +366,11 @@ trait StreamTrait
      */
     public function getMetadata($key = null)
     {
-        if (!$this->resource) {
+        if (!is_resource($this->resource)) {
             return $key ? null : [];
         }
 
-        try {
-            $metadata = stream_get_meta_data($this->resource);
-        } catch (Throwable $e) {
-            $this->detach();
-            return $key ? null : [];
-        }
+        $metadata = stream_get_meta_data($this->resource);
 
         if ($key === null) {
             return $metadata;
