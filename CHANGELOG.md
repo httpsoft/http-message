@@ -1,5 +1,11 @@
 # HTTP Message Change Log
 
+## 1.1.4 - 2023.11.16
+
+### Fixed
+
+- [#29](https://github.com/httpsoft/http-message/pull/29) Fixes error handling to `HttpSoft\Message\StreamTrait::getContents()`.
+
 ## 1.1.3 - 2023.11.15
 
 ### Fixed
