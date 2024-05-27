@@ -358,6 +358,7 @@ final class Uri implements UriInterface
      * @param string $scheme
      * @return string
      * @throws InvalidArgumentException for invalid or unsupported schemes.
+     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     private function normalizeScheme(string $scheme): string
     {
