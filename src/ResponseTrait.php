@@ -147,6 +147,7 @@ trait ResponseTrait
      * @psalm-suppress DocblockTypeContradiction
      * @psalm-suppress TypeDoesNotContainType
      * @psalm-suppress RedundantCondition
+     * @psalm-suppress InvalidCast
      * @psalm-suppress NoValue
      */
     public function withStatus($code, $reasonPhrase = ''): ResponseInterface

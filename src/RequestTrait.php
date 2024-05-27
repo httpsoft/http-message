@@ -131,7 +131,7 @@ trait RequestTrait
      * @param string $method Case-sensitive method.
      * @return static
      * @throws InvalidArgumentException for invalid HTTP methods.
-     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress TypeDoesNotContainType, NoValue, RedundantCondition
      */
     public function withMethod($method): RequestInterface
     {
@@ -241,7 +241,7 @@ trait RequestTrait
     /**
      * @param UriInterface|string $uri
      * @throws InvalidArgumentException for invalid URI.
-     * @psalm-suppress RedundantConditionGivenDocblockType
+     * @psalm-suppress TypeDoesNotContainType, NoValue, RedundantCondition
      */
     private function setUri($uri): void
     {
@@ -265,6 +265,7 @@ trait RequestTrait
      * Updates `Host` header from the current URI and sets the `Host` first in the list of headers.
      *
      * @see https://tools.ietf.org/html/rfc7230#section-5.4
+     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     private function updateHostHeaderFromUri(): void
     {

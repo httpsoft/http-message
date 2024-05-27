@@ -171,6 +171,7 @@ trait StreamTrait
      * Returns whether or not the stream is seekable.
      *
      * @return bool
+     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function isSeekable(): bool
     {
@@ -363,6 +364,7 @@ trait StreamTrait
      * @return array|mixed|null Returns an associative array if no key is
      *     provided. Returns a specific key value if a key is provided and the
      *     value is found, or null if the key is not found.
+     * @psalm-suppress RiskyTruthyFalsyComparison
      */
     public function getMetadata($key = null)
     {
