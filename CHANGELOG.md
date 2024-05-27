@@ -1,5 +1,11 @@
 # HTTP Message Change Log
 
+## 1.1.5 - 2024.05.27
+
+### Added
+
+- [#31](https://github.com/httpsoft/http-message/pull/31) Adds support of HTTP/3.0.
+
 ## 1.1.4 - 2023.11.16
 
 ### Fixed
