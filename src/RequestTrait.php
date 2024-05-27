@@ -131,7 +131,7 @@ trait RequestTrait
      * @param string $method Case-sensitive method.
      * @return static
      * @throws InvalidArgumentException for invalid HTTP methods.
-     * @psalm-suppress TypeDoesNotContainType, NoValue, RedundantCondition
+     * @psalm-suppress DocblockTypeContradiction, TypeDoesNotContainType, NoValue, RedundantCondition
      */
     public function withMethod($method): RequestInterface
     {
