@@ -36,7 +36,7 @@ trait MessageTrait
      *
      * @var string[]
      */
-    private static array $supportedProtocolVersions = ['1.0', '1.1', '2.0', '2'];
+    private static array $supportedProtocolVersions = ['1.0', '1.1', '2.0', '2', '3.0', '3'];
 
     /**
      * Map of all registered original headers, as `original header name` => `array of values`.
