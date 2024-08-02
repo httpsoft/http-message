@@ -104,8 +104,8 @@ final class UploadedFile implements UploadedFileInterface
         $streamOrFile,
         int $size,
         int $error,
-        string $clientFilename = null,
-        string $clientMediaType = null
+        ?string $clientFilename = null,
+        ?string $clientMediaType = null
     ) {
         if (!array_key_exists($error, self::ERRORS)) {
             throw new InvalidArgumentException(sprintf(
