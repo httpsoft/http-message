@@ -1,5 +1,11 @@
 # HTTP Message Change Log
 
+## 1.1.6 - 2024.08.09
+
+### Fixed
+
+- [#34](https://github.com/httpsoft/http-message/pull/34) Fixes PHP 8.4 deprecation notices.
+
 ## 1.1.5 - 2024.05.27
 
 ### Added
