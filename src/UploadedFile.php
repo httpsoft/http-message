@@ -92,11 +92,14 @@ final class UploadedFile implements UploadedFileInterface
     private bool $isMoved = false;
 
     /**
-     * @param StreamInterface|string|resource $streamOrFile
-     * @param int $size
-     * @param int $error
-     * @param string|null $clientFilename
-     * @param string|null $clientMediaType
+     * @param StreamInterface|string|resource $streamOrFile The file to upload. Must be one of the following:
+     * - an instance of `StreamInterface`;
+     * - a string stream identifier (e.g., 'php://temp') or a file path;
+     * - a valid stream resource.
+     * @param int $size The size of the uploaded file.
+     * @param int $error The error code.
+     * @param string|null $clientFilename Client filename.
+     * @param string|null $clientMediaType Client media type.
      * @psalm-suppress DocblockTypeContradiction
      * @psalm-suppress RedundantConditionGivenDocblockType
      */

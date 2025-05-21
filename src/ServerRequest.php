@@ -52,16 +52,21 @@ final class ServerRequest implements ServerRequestInterface
     private array $uploadedFiles;
 
     /**
-     * @param array $serverParams
-     * @param array $uploadedFiles
-     * @param array $cookieParams
-     * @param array $queryParams
-     * @param array|object|null $parsedBody
-     * @param string $method
-     * @param UriInterface|string $uri
-     * @param array $headers
-     * @param StreamInterface|string|resource|null $body
-     * @param string $protocol
+     * @param array $serverParams The server parameters.
+     * @param array $uploadedFiles The array of uploaded files, each being an instance of `UploadedFileInterface`.
+     * Nested arrays are allowed.
+     * @param array $cookieParams The cookie parameters.
+     * @param array $queryParams The query parameters.
+     * @param array|object|null $parsedBody The parsed body.
+     * @param string $method The HTTP method.
+     * @param UriInterface|string $uri The URI to request.
+     * @param array $headers The headers to send with the request.
+     * @param StreamInterface|string|resource|null $body The body of the request. Must be one of the following:
+     *  - an instance of `StreamInterface`;
+     *  - a string stream identifier (e.g., 'php://temp') or a file path;
+     *  - a valid stream resource;
+     *  - `null`.
+     * @param string $protocol The HTTP protocol version.
      */
     public function __construct(
         array $serverParams = [],

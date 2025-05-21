@@ -12,11 +12,15 @@ final class Response implements ResponseInterface
     use ResponseTrait;
 
     /**
-     * @param int $statusCode
-     * @param array $headers
-     * @param StreamInterface|string|resource|null $body
-     * @param string $protocol
-     * @param string $reasonPhrase
+     * @param int $statusCode The HTTP status code.
+     * @param array $headers The headers to send with the response.
+     * @param StreamInterface|string|resource|null $body The body of the response. Must be one of the following:
+     *  - an instance of `StreamInterface`;
+     *  - a string stream identifier (e.g., 'php://temp') or a file path;
+     *  - a valid stream resource;
+     *  - `null`.
+     * @param string $protocol The HTTP protocol version.
+     * @param string $reasonPhrase The reason phrase associated with the status code.
      */
     public function __construct(
         int $statusCode = 200,
