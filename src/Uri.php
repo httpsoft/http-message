@@ -72,7 +72,7 @@ final class Uri implements UriInterface
     private ?string $cache = null;
 
     /**
-     * @param string $uri
+     * @param string $uri The URI string to parse.
      */
     public function __construct(string $uri = '')
     {
